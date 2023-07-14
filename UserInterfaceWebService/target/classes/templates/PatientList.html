@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>MediScreen - Patient List</title>
+<link rel="stylesheet" type="text/css"
+	href="webjars/bootstrap/4.0.0-2/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+	
+	<h1>Application MediScreen</h1>
+	<div id="content" class="container">
+
+		<a href="patient/add">Add New Patient</a>
+		
+		<div class="error" th:if="${param.delSuccess}">
+			<label>Patient has been deleted.</label>
+		</div>
+			
+		<div class="error" th:if="${param.addSuccess}">
+			<label>Patient has been added.</label>
+		</div>
+
+ 		 <div class="search-bar">
+    		<input type="text" placeholder="Rechercher un patient...">
+   			 <button>Rechercher</button>
+  			  <button>Ajouter un patient</button>
+ 		 </div>	
+ 		 
+		<table>
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Firstname</th>
+					<th>Lastname</th>
+					<th>Gender</th>
+					<th>Date Of Birth</th>
+					<th>Address</th>
+					<th>Phone</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="patient: ${patients}" >
+					<td th:text="${patient.id}" />
+					<td th:text="${patient.given}" />
+					<td th:text="${patient.family}" />
+					<td th:text="${patient.sex}" />
+					<td th:text="${patient.dob}" />
+					<td th:text="${patient.address}" />
+					<td th:text="${patient.phone}" />
+					<td><!-- ce td est provisoire -->
+						<a th:href="@{/patient/{id}(id=${patient.id})}">View</a>
+						<a th:href="@{/patient/delete/{id}(id=${patient.id})}">X</a>
+					</td>	
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+	<script type="text/javascript"
+		src="webjars/bootstrap/4.0.0-2/js/bootstrap.min.js"></script>
+</body>
+</html>

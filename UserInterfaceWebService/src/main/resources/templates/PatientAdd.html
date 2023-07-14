@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>MediScreen - Patient Add</title>
+<link rel="stylesheet" type="text/css"
+	href="webjars/bootstrap/4.0.0-2/css/bootstrap.min.css" />
+</head>
+
+<body>
+	<div class="container">
+		<h1>Application MediScreen</h1>
+		
+		<a href="/patient"> &lt;- Back to patients list</a>
+
+		<form method="POST" th:object="${patientBean}">
+
+			<div class="input">
+				<label for="given">Firstname</label> 
+				<input class="sec-2" name="given" type="text" placeholder="Firstname" required />
+			</div>
+
+			<div class="input">
+				<label for="family">Lastname</label> 
+				<input class="sec-2" name="family" type="text" placeholder="Lastname" required />
+			</div>
+
+			<div class="input">
+				<label for="dob">Date Of Birth</label> 
+				<input class="sec-2" name="dob" type="date" required />
+			</div>
+
+			<fieldset>
+				<legend>Gender:</legend>
+				<div>
+					<input class="sec-2" id="sexChoice1" name="sex" type="radio" value="F" required />
+					<label for="sexChoice1">Femme</label> 
+					<input class="sec-2" id="sexChoice2" name="sex" type="radio" value="H" required /> 
+					<label for="sexChoice2">Homme</label> 
+				</div>
+			</fieldset>
+			
+			<div class="input">
+				<label for="address">Address</label> 
+				<input class="sec-2" name="address" type="text" placeholder="Address" />
+			</div>
+
+			<div class="input">
+				<label for="phone">Phone Number</label> 
+				<input class="sec-2" name="phone" type="text" placeholder="012-345-6789" />
+			</div>
+
+			<div class="error" th:if="${param.success}">
+				<p>Modifications successfully done!</p>
+			</div>
+
+			<div class="error" th:if="${param.error}">
+				<p>Put valid infos.</p>
+			</div>
+
+			<button name="patientBean" type="submit" formmethod="POST">Add Patient</button>
+
+		</form>
+		
+	</div>
+	<script type="text/javascript"
+		src="webjars/bootstrap/4.0.0-2/js/bootstrap.min.js"></script>
+</body>
+</html>
