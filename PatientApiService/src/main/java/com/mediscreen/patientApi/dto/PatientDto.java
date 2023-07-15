@@ -4,42 +4,40 @@ import java.time.LocalDate;
 
 import com.mediscreen.patientApi.domain.Patient;
 
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Pattern;
 
 /**
- * PatientDTO	.
+ * PatientDTO .
  *
  * @author Antoine Lanselle
  */
 public class PatientDto {
-	
+
 	private int id;
 
-	@Size(min = 2, max = 20)
-	@NotNull(message="Enter a Lastname.")
+	@Pattern(regexp = "^[a-zA-Z]{2,20}$", message = "Lastname must be less than 21 letters.")
 	private String family;
-	
-	@Size(min = 2, max = 20)
-	@NotNull(message="Enter a Firstname.")
+
+	@Pattern(regexp = "^[a-zA-Z]{2,20}$", message = "Firstname must be less than 21 letters.")
 	private String given;
-	
-	@Past
-	@NotNull
+
+	@Past(message = "Date Of Birth is not valid.")
 	private LocalDate dob;
-	
-	@NotNull
+
+	@Pattern(regexp = "^[F|H]{1}$", message = "Gender must be H or F.")
 	private String sex;
-	
+
+	@Pattern(regexp = "^([\\w\\s]{2,255}|)$", message = "Address must be alphanumeric characters.")
 	private String address;
-	
+
+	@Pattern(regexp = "^((\\d{3}\\-){2}\\d{4}|)$", message = "Phone number must be xxx-xxx-xxxx.")
 	private String phone;
-	
+
 	public PatientDto() {
-		
+
 	}
-	
+
 	public PatientDto(Patient patient) {
 		this.id = patient.getId();
 		this.family = patient.getLastname();
@@ -49,7 +47,7 @@ public class PatientDto {
 		this.address = patient.getAddress();
 		this.phone = patient.getPhone();
 	}
-	
+
 	public int getid() {
 		return id;
 	}
@@ -57,7 +55,7 @@ public class PatientDto {
 	public void setid(int id) {
 		this.id = id;
 	}
-	
+
 	public String getFamily() {
 		return family;
 	}

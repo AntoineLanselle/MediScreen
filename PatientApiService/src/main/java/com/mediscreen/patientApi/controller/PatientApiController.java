@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -74,12 +75,16 @@ public class PatientApiController {
 	 * @return
 	 */
 	@PostMapping("/patient/add")
-	public ResponseEntity<String> addPatient(@Valid @RequestBody PatientDto patientDto) {
+	public ResponseEntity<String> addPatient(@Valid @RequestBody PatientDto patientDto, BindingResult result) {
 		logger.info("POST request - addPatient " + patientDto.getFamily() + ", " + patientDto.getGiven());
-
-		patientService.addPatient(patientDto);
-
-		return ResponseEntity.status(HttpStatus.CREATED).body("Patient has been added in data base.");
+		
+		if (result.hasErrors()) {
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+					.body(result.getAllErrors().get(0).getDefaultMessage());
+		} else {
+			patientService.addPatient(patientDto);
+			return ResponseEntity.status(HttpStatus.CREATED).body("Patient has been added in data base.");
+		}
 	}
 
 	/**
@@ -95,17 +100,21 @@ public class PatientApiController {
 	 */
 	@PutMapping("/patient/update/{id}")
 	public ResponseEntity<String> updatePatient(@PathVariable("id") int patientId,
-			@Valid @RequestBody PatientDto patientDto) {
+			@Valid @RequestBody PatientDto patientDto, BindingResult result) {
 		logger.info("PUT request - updatePatient " + patientId);
 
-		try {
-			patientService.updatePatient(patientId, patientDto);
-		} catch (PatientNotFoundException ex) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body("Patient with id: " + patientId + ", not found in data base !");
+		if (result.hasErrors()) {
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+					.body(result.getAllErrors().get(0).getDefaultMessage());
+		} else {
+			try {
+				patientService.updatePatient(patientId, patientDto);
+			} catch (PatientNotFoundException ex) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND)
+						.body("Patient with id: " + patientId + ", not found in data base !");
+			}
+			return ResponseEntity.status(HttpStatus.OK).body("Patient has been updated in data base.");
 		}
-
-		return ResponseEntity.status(HttpStatus.OK).body("Patient has been updated in data base.");
 	}
 
 	/**

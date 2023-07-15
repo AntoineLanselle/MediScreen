@@ -10,7 +10,9 @@
 	<div class="container">
 		<h1>Application MediScreen</h1>
 		
-		<a href="/patient"> &lt;- Back to patients list</a>
+		<form method="GET" action="/patient" >
+  			<button type="submit" formmethod="GET"> &lt;- Back to patients list</button>
+  		</form>
 
 		<form method="POST" th:object="${patientBean}">
 
@@ -67,12 +69,9 @@
 
 		</form>
 		
-		<a th:href="@{/patient/delete/{id}(id=${patient.id})}">Delete</a>
-
-	<!-- <form th:action="/patient/delete/${patient.id}" method="POST">
-			<input type="hidden" value="DELETE">
-			<button type="submit">X</button>
-		 </form>  -->	
+		<form method="POST" th:action="@{/patient/delete/{id}(id=${patient.id})}">
+			<button name="deletePatient" type="submit" formmethod="POST">Delete</button>
+		</form>
 		
 	</div>
 	<script type="text/javascript"

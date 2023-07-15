@@ -27,7 +27,7 @@ public class Patient {
 
 	@Column(name = "lastname")
 	private String lastname;
-	
+
 	@Column(name = "firstname")
 	private String firstname;
 
@@ -42,9 +42,9 @@ public class Patient {
 
 	@Column(name = "phone")
 	private String phone;
-	
+
 	public Patient() {
-		
+
 	}
 
 	public Patient(PatientDto patientDto) {
@@ -55,11 +55,11 @@ public class Patient {
 		this.address = patientDto.getAddress();
 		this.phone = patientDto.getPhone();
 	}
-	
+
 	public int getId() {
 		return id;
 	}
-	
+
 	public void setId(int id) {
 		this.id = id;
 	}

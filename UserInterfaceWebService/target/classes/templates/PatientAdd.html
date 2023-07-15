@@ -10,7 +10,9 @@
 	<div class="container">
 		<h1>Application MediScreen</h1>
 		
-		<a href="/patient"> &lt;- Back to patients list</a>
+		<form method="GET" action="/patient" >
+  			<button type="submit" formmethod="GET"> &lt;- Back to patients list</button>
+  		</form>
 
 		<form method="POST" th:object="${patientBean}">
 

@@ -74,11 +74,14 @@ public class ClientController {
 		}
 	}
 
-	// TODO: ça marche mais je prefererais un Post c'est plus logique
-	@GetMapping("/patient/delete/{id}")
+	@PostMapping("/patient/delete/{id}")
 	public String patientDelete(Model model, @PathVariable("id") int id) {
-		patientProxy.deletePatient(id);
-		return "redirect:/patient?delSuccess";
+		try {
+			patientProxy.deletePatient(id);
+			return "redirect:/patient?delSuccess";
+		} catch (Exception ex) {
+			return "redirect:/patient?delError";
+		}
 	}
 
 }

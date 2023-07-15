@@ -11,8 +11,6 @@
 	
 	<h1>Application MediScreen</h1>
 	<div id="content" class="container">
-
-		<a href="patient/add">Add New Patient</a>
 		
 		<div class="error" th:if="${param.delSuccess}">
 			<label>Patient has been deleted.</label>
@@ -22,10 +20,16 @@
 			<label>Patient has been added.</label>
 		</div>
 
+ 		<form method="GET" action="/patient/add" >
+  			<button type="submit" formmethod="GET">Add a new patient</button>
+  		</form>
+  			
  		 <div class="search-bar">
-    		<input type="text" placeholder="Rechercher un patient...">
-   			 <button>Rechercher</button>
-  			  <button>Ajouter un patient</button>
+  			<form method="POST">
+    			<input type="text" placeholder="Search a Firstname...">
+    			<input type="text" placeholder="Search a Lastname...">
+   				<button>Search</button>
+   			</form>
  		 </div>	
  		 
 		<table>
@@ -49,9 +53,12 @@
 					<td th:text="${patient.dob}" />
 					<td th:text="${patient.address}" />
 					<td th:text="${patient.phone}" />
-					<td><!-- ce td est provisoire -->
-						<a th:href="@{/patient/{id}(id=${patient.id})}">View</a>
-						<a th:href="@{/patient/delete/{id}(id=${patient.id})}">X</a>
+					<!-- ci-dessous : ce td est provisoire -->
+					<td><a th:href="@{/patient/{id}(id=${patient.id})}">View</a></td>
+					<td>
+						<form method="POST" th:action="@{/patient/delete/{id}(id=${patient.id})}">
+							<button type="submit" formmethod="POST">X</button>
+						</form>
 					</td>	
 				</tr>
 			</tbody>
