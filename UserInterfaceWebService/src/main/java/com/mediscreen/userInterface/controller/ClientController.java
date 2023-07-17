@@ -59,6 +59,7 @@ public class ClientController {
 		if (result.hasErrors()) {
 			return "redirect:/patient/" + id;
 		} else {
+			patientProxy.updatePatient(id, patientBean);
 			return "redirect:/patient/" + id + "?success";
 		}
 	}
