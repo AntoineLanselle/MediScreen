@@ -80,7 +80,7 @@ public class PatientApiController {
 		
 		if (result.hasErrors()) {
 			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
-					.body(result.getAllErrors().get(0).getDefaultMessage());
+					.body(result.getAllErrors().toString());
 		} else {
 			patientService.addPatient(patientDto);
 			return ResponseEntity.status(HttpStatus.CREATED).body("Patient has been added in data base.");
@@ -95,8 +95,6 @@ public class PatientApiController {
 	 *
 	 * @return a ResponseEntity with OK status and as body a String message to
 	 *         validate the operation.
-	 * @return
-	 * @return
 	 */
 	@PutMapping("/patient/update/{id}")
 	public ResponseEntity<String> updatePatient(@PathVariable("id") int patientId,
@@ -105,7 +103,7 @@ public class PatientApiController {
 
 		if (result.hasErrors()) {
 			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
-					.body(result.getAllErrors().get(0).getDefaultMessage());
+					.body(result.getAllErrors().toString());
 		} else {
 			try {
 				patientService.updatePatient(patientId, patientDto);

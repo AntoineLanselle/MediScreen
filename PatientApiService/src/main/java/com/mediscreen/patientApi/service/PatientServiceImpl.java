@@ -100,7 +100,6 @@ public class PatientServiceImpl implements PatientService {
 	public void deletePatient(int patientId) throws PatientNotFoundException {
 		logger.info("Trying to delete patient in data base.");
 
-		// TODO : try catch ? 
 		PatientDto patient = findPatientById(patientId);
 		if (patient == null) {
 			String error = "Patient: " + patientId + " not found in data base !";
