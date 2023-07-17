@@ -2,12 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>MediScreen - Patient Details</title>
-<link rel="stylesheet" type="text/css"
-	href="webjars/bootstrap/4.0.0-2/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="/css/styles.css" />
 </head>
 
 <body>
+
 	<div class="container">
+	
 		<h1>Application MediScreen</h1>
 		
 		<form method="GET" action="/patient" >
@@ -17,64 +18,67 @@
 		<form method="POST" th:object="${patientBean}">
 
 			<div class="input">
-				<label for="given">Firstname</label> 
-				<input class="sec-2" name="given" type="text" placeholder="Firstname" th:value="${patient.given}" required />
+				<label for="given">Firstname*</label> 
+				<input class="sec-2" name="given" type="text" placeholder="Firstname" th:value="${patientBean.given}" th:field="*{given}" required />
+				<p class="error" th:if="${#fields.hasErrors('given')}" th:errors="*{given}"></p>
 			</div>
 
 			<div class="input">
-				<label for="family">Lastname</label> 
-				<input class="sec-2" name="family" type="text" placeholder="Lastname" th:value="${patient.family}" required />
+				<label for="family">Lastname*</label> 
+				<input class="sec-2" name="family" type="text" placeholder="Lastname" th:value="${patientBean.family}" th:field="*{family}"  required />
+				<p class="error" th:if="${#fields.hasErrors('family')}" th:errors="*{family}"></p>
 			</div>
 
 			<div class="input">
-				<label for="dob">Date Of Birth</label> 
-				<input class="sec-2" name="dob" type="date" th:value="${patient.dob}" required />
+				<label for="dob">Date Of Birth*</label> 
+				<input class="sec-2" name="dob" type="date" th:value="${patientBean.dob}" th:field="*{dob}" required />
+				<p class="error" th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}"></p>
 			</div>
 
-			<fieldset th:switch="${patient.sex}">
-				<legend>Gender:</legend>
+			<fieldset th:switch="${patientBean.sex}">
+				<legend>Gender*</legend>
 				<div th:case="F">
-					<input class="sec-2" id="sexChoice1" name="sex" type="radio" value="F" checked required />
+					<input class="sec-2" id="sexChoice1" name="sex" type="radio" value="F" th:field="*{sex}" checked required />
 					<label for="sexChoice1">Femme</label> 
-					<input class="sec-2" id="sexChoice2" name="sex" type="radio" value="H" required /> 
+					<input class="sec-2" id="sexChoice2" name="sex" type="radio" value="H" th:field="*{sex}" required /> 
 					<label for="sexChoice2">Homme</label> 
 				</div>
 				<div th:case="H">
-					<input class="sec-2" id="sexChoice1" name="sex" type="radio" value="F" required />
+					<input class="sec-2" id="sexChoice1" name="sex" type="radio" value="F" th:field="*{sex}" required />
 					<label for="sexChoice1">Femme</label> 
-					<input class="sec-2" id="sexChoice2" name="sex" type="radio" value="H" checked required /> 
+					<input class="sec-2" id="sexChoice2" name="sex" type="radio" value="H" th:field="*{sex}" checked required /> 
 					<label for="sexChoice2">Homme</label> 
 				</div>
+				<p class="error" th:if="${#fields.hasErrors('sex')}" th:errors="*{sex}"></p>
 			</fieldset>
 			
 			<div class="input">
 				<label for="address">Address</label> 
-				<input class="sec-2" name="address" type="text" placeholder="Address" th:value="${patient.address}"/>
+				<input class="sec-2" name="address" type="text" placeholder="Address" th:value="${patientBean.address}" th:field="*{address}"/>
+				<p class="error" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></p>
 			</div>
 
 			<div class="input">
 				<label for="phone">Phone Number</label> 
-				<input class="sec-2" name="phone" type="text" placeholder="012-345-6789" th:value="${patient.phone}" />
+				<input class="sec-2" name="phone" type="text" placeholder="012-345-6789" th:value="${patientBean.phone}" th:field="*{phone}" />
+				<p class="error" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></p>
 			</div>
 
 			<div class="error" th:if="${param.success}">
 				<p>Modifications successfully done!</p>
 			</div>
-
-			<div class="error" th:if="${param.error}">
-				<p>Put valid infos.</p>
-			</div>
-
+			
+			<p>Fields marked with (*) are mandatory</p>
+			
 			<button name="patientBean" type="submit" formmethod="POST">Modify</button>
 
 		</form>
 		
-		<form method="POST" th:action="@{/patient/delete/{id}(id=${patient.id})}">
+		<form method="POST" th:action="@{/patient/delete/{id}(id=${patientBean.id})}">
 			<button name="deletePatient" type="submit" formmethod="POST">Delete</button>
 		</form>
 		
 	</div>
-	<script type="text/javascript"
-		src="webjars/bootstrap/4.0.0-2/js/bootstrap.min.js"></script>
+	
 </body>
 </html>

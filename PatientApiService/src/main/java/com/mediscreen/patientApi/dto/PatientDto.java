@@ -80,6 +80,10 @@ public class PatientDto {
 		this.dob = dob;
 	}
 
+	public void setDob(String dob) {
+		this.dob = LocalDate.parse(dob);
+	}
+
 	public String getSex() {
 		return sex;
 	}

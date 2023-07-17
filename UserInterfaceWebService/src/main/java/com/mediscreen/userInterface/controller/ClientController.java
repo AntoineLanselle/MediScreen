@@ -31,46 +31,35 @@ public class ClientController {
 		return "PatientList";
 	}
 
+	@GetMapping("/patient/add")
+	public String patientAddPage(Model model) {
+		model.addAttribute("patientBean", new PatientBean());
+		return "PatientAdd";
+	}
+	
 	@GetMapping("/patient/{id}")
 	public String patientDetailsPage(Model model, @PathVariable("id") int id) {
-		PatientBean patient = patientProxy.getPatient(id);
-		model.addAttribute("patient", patient);
+		model.addAttribute("patientBean", patientProxy.getPatient(id));
 		return "PatientDetails";
 	}
 
-	@GetMapping("/patient/add")
-	public String patientAddPage() {
-		return "PatientAdd";
+	@PostMapping("/patient/add")
+	public String patientAdd(@Valid @ModelAttribute("patientBean") PatientBean patientBean, BindingResult result) {
+		if (result.hasErrors()) {
+			return "PatientAdd";
+		} else {
+			patientProxy.addPatient(patientBean);
+			return "redirect:/patient?addSuccess";
+		}
 	}
-
-	// TODO: recuperer les erreurs avec un model ? ModelAndView ?
+	
 	@PostMapping("/patient/{id}")
 	public String patientUpdate(@Valid @ModelAttribute("patientBean") PatientBean patientBean, BindingResult result,
 			@PathVariable("id") int id) {
 		if (result.hasErrors()) {
-			return "redirect:/patient/" + id + "?error";
+			return "redirect:/patient/" + id;
 		} else {
-			try {
-				patientProxy.updatePatient(id, patientBean);
-				return "redirect:/patient/" + id + "?success";
-			} catch (Exception ex) {
-				return "redirect:/patient/" + id + "?error";
-			}
-		}
-	}
-
-	// TODO: recuperer les erreurs avec un model ? ModelAndView ?
-	@PostMapping("/patient/add")
-	public String patientAdd(@Valid @ModelAttribute("patientBean") PatientBean patientBean, BindingResult result) {
-		if (result.hasErrors()) {
-			return "redirect:/patient/add?error";
-		} else {
-			try {
-				patientProxy.addPatient(patientBean);
-				return "redirect:/patient?addSuccess";
-			} catch (Exception ex) {
-				return "redirect:/patient/add?error";
-			}
+			return "redirect:/patient/" + id + "?success";
 		}
 	}
 

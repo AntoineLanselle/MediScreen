@@ -2,15 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>MediScreen - Patient List</title>
-<link rel="stylesheet" type="text/css"
-	href="webjars/bootstrap/4.0.0-2/css/bootstrap.min.css" />
-<link rel="stylesheet" type="text/css" href="styles.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css" />
 </head>
 
 <body>
 	
-	<h1>Application MediScreen</h1>
-	<div id="content" class="container">
+	<div class="container">
+		
+		<h1>Application MediScreen</h1>
 		
 		<div class="error" th:if="${param.delSuccess}">
 			<label>Patient has been deleted.</label>
@@ -65,7 +64,6 @@
 		</table>
 
 	</div>
-	<script type="text/javascript"
-		src="webjars/bootstrap/4.0.0-2/js/bootstrap.min.js"></script>
+
 </body>
 </html>

@@ -1,7 +1,6 @@
 package com.mediscreen.userInterface.beans;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
@@ -10,10 +9,10 @@ public class PatientBean {
 
 	private int id;
 
-	@Pattern(regexp = "^[a-zA-Z]{2,20}$", message = "Lastname must be less than 21 letters.")
+	@Pattern(regexp = "^[a-zA-Z]{2,20}$", message = "Lastname must be more than 2 and less than 21 letters.")
 	private String family;
 
-	@Pattern(regexp = "^[a-zA-Z]{2,20}$", message = "Firstname must be less than 21 letters.")
+	@Pattern(regexp = "^[a-zA-Z]{2,20}$", message = "Firstname must be more than 2 and less than 21 letters.")
 	private String given;
 
 	@Past(message = "Date Of Birth is not valid.")
@@ -60,8 +59,11 @@ public class PatientBean {
 	}
 
 	public void setDob(String dob) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		this.dob = LocalDate.parse(dob, formatter);
+		this.dob = LocalDate.parse(dob);
+	}
+	
+	public void setDob(LocalDate dob) {
+		this.dob = dob;
 	}
 
 	public String getSex() {
