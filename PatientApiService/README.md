@@ -18,6 +18,7 @@ To run the PatientApiService application, follow these steps:
 The PatientApiService provides the following API endpoints:
 
 - GET /patient: Retrieves all patients.
+- GET /patient/search: Retrieves matching patients.
 - GET /patient/{id}: Retrieves a patient by their ID.
 - POST /patient/add: Adds a new patient.
 - PUT /patient/update/{id}: Updates an existing patient.

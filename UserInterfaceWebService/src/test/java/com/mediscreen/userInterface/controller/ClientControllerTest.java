@@ -45,7 +45,23 @@ public class ClientControllerTest {
 		when(patientProxy.getAllPatients()).thenReturn(patients);
 
 		// WHEN
-		String testResult = clientController.patientListPage(model);
+		String testResult = clientController.patientListPage(model, null, null);
+
+		// THEN
+		assertEquals("PatientList", testResult);
+		verify(model, times(1)).addAttribute("patients", patients);
+	}
+	
+	@Test
+	public void patientListPage_WithFirstnameOrLastnameNotNull_ShouldReturnViewPatientList() {
+		// GIVEN
+		List<PatientBean> patients = new ArrayList<>();
+		patients.add(new PatientBean());
+		patients.add(new PatientBean());
+		when(patientProxy.searchPatients("Jean", null)).thenReturn(patients);
+
+		// WHEN
+		String testResult = clientController.patientListPage(model, "Jean", null);
 
 		// THEN
 		assertEquals("PatientList", testResult);
@@ -124,7 +140,7 @@ public class ClientControllerTest {
 	}
 	
 	@Test
-	public void patientUpdate_ShouldRedirect() {
+	public void patientUpdate_ShouldReturnViewPatientDetails() {
 		// GIVEN
 		PatientBean patient = new PatientBean();
 		when(bindingResult.hasErrors()).thenReturn(true);
@@ -133,7 +149,7 @@ public class ClientControllerTest {
 		String testResult = clientController.patientUpdate(patient, bindingResult, 1);
 
 		// THEN
-		assertEquals("redirect:/patient/1", testResult);
+		assertEquals("PatientDetails", testResult);
 		verify(patientProxy, never()).updatePatient(1, patient);
 	}
 

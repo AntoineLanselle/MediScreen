@@ -1,7 +1,7 @@
 package com.mediscreen.patientApi.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,11 +37,38 @@ public class PatientServiceImpl implements PatientService {
 		logger.info("Getting all patients in data base.");
 
 		List<Patient> allPatients = patientRepository.findAll();
-		List<PatientDto> allPatientsDto = new ArrayList<>();
-		for (Patient patient : allPatients)
-			allPatientsDto.add(new PatientDto(patient));
+		List<PatientDto> allPatientsDto = allPatients.stream().map(PatientDto::new).collect(Collectors.toList());
 
 		return allPatientsDto;
+	}
+
+	/**
+	 * Searches for patients in the database based on the provided firstname and lastname.
+	 * If both firstname and lastname are provided, it searches for patients matching both criteria.
+	 *
+	 * @param firstname the firstname parameter for filtering patients by firstname.
+	 * @param lastname  the lastname parameter for filtering patients by lastname.
+	 * 
+	 * @return a list of PatientDto objects representing the patients matching the search criteria.
+	 */
+	@Override
+	public List<PatientDto> searchPatients(String firstname, String lastname) {
+		logger.info("Searching patients in data base with firstname: " + firstname + " and lastname " + lastname);
+
+		List<Patient> patients;
+		if (firstname != null && lastname != null) {
+			patients = patientRepository.findByFirstnameContainingAndLastnameContaining(firstname, lastname);
+		} else if (firstname != null) {
+			patients = patientRepository.findByFirstnameContaining(firstname);
+		} else if (lastname != null) {
+			patients = patientRepository.findByLastnameContaining(lastname);
+		} else {
+			patients = patientRepository.findAll();
+		}
+
+		List<PatientDto> patientDtos = patients.stream().map(PatientDto::new).collect(Collectors.toList());
+
+		return patientDtos;
 	}
 
 	/**

@@ -25,16 +25,16 @@ import com.mediscreen.patientApi.service.PatientService;
 public class PatientApiControllerTest {
 
 	@Mock
-    private PatientService patientService;
-	
+	private PatientService patientService;
+
 	@InjectMocks
 	private PatientApiController patientController;
-	
+
 	@Mock
-    private BindingResult bindingResult;
-	
+	private BindingResult bindingResult;
+
 	private PatientDto patientDto;
-	
+
 	@BeforeEach
 	public void setUp() {
 		patientDto = new PatientDto();
@@ -43,47 +43,62 @@ public class PatientApiControllerTest {
 		patientDto.setDob("1950-02-15");
 		patientDto.setSex("H");
 	}
-	
+
 	@Test
 	public void getAllPatients_shouldReturnResponseEntityWithOkStatusAndListPatientDtoAsBody() {
 		// GIVEN
 		List<PatientDto> listPatients = new ArrayList<>();
 		when(patientService.findAllPatients()).thenReturn(listPatients);
-		
+
 		// WHEN
 		ResponseEntity<List<PatientDto>> testResult = patientController.getAllPatients();
-		
+
 		// THEN
 		assertEquals(listPatients, testResult.getBody());
 		assertEquals(HttpStatus.OK, testResult.getStatusCode());
 	}
-	
+
+	@Test
+	public void searchPatients_shouldReturnResponseEntityWithOkStatusAndListPatientDtoAsBody() {
+		// GIVEN
+		List<PatientDto> expectedPatients = new ArrayList<>();
+		expectedPatients.add(patientDto);
+		when(patientService.searchPatients("Jean", "Dumont")).thenReturn(expectedPatients);
+
+		// WHEN
+		ResponseEntity<List<PatientDto>> response = patientController.searchPatients("Jean", "Dumont");
+
+		// THEN
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+		assertEquals(expectedPatients, response.getBody());
+	}
+
 	@Test
 	public void getPatient_shouldReturnResponseEntityWithOkStatusAndSpecificPatientDtoAsBody() {
 		// GIVEN
 		PatientDto patientDto = new PatientDto();
 		when(patientService.findPatientById(1)).thenReturn(patientDto);
-		
-		// WHEN 
+
+		// WHEN
 		ResponseEntity<PatientDto> testResult = patientController.getPatient(1);
-		
+
 		// THEN
 		assertEquals(patientDto, testResult.getBody());
 		assertEquals(HttpStatus.OK, testResult.getStatusCode());
 	}
-	
+
 	@Test
 	public void getPatient_shouldReturnResponseEntityWithNotFoundStatus() {
 		// GIVEN
 		doThrow(PatientNotFoundException.class).when(patientService).findPatientById(1);
-		
-		// WHEN 
+
+		// WHEN
 		ResponseEntity<PatientDto> testResult = patientController.getPatient(1);
-		
+
 		// THEN
 		assertEquals(HttpStatus.NOT_FOUND, testResult.getStatusCode());
 	}
-	
+
 	@Test
 	public void addPatient_shouldReturnResponseEntityWithCreatedStatusAndStringAsBody() {
 		// GIVEN
@@ -96,7 +111,7 @@ public class PatientApiControllerTest {
 		assertEquals("Patient has been added in data base.", testResult.getBody());
 		assertEquals(HttpStatus.CREATED, testResult.getStatusCode());
 	}
-	
+
 	@Test
 	public void addPatient_shouldReturnResponseEntityWithNotAcceptableStatusAndStringAsBody() {
 		// GIVEN
@@ -108,7 +123,7 @@ public class PatientApiControllerTest {
 		// THEN
 		assertEquals(HttpStatus.NOT_ACCEPTABLE, testResult.getStatusCode());
 	}
-	
+
 	@Test
 	public void updatePatient_shouldReturnResponseEntityWithOkStatusAndStringAsBody() {
 		// GIVEN
@@ -121,7 +136,7 @@ public class PatientApiControllerTest {
 		assertEquals("Patient has been updated in data base.", testResult.getBody());
 		assertEquals(HttpStatus.OK, testResult.getStatusCode());
 	}
-	
+
 	@Test
 	public void updatePatient_shouldReturnResponseEntityWithNotFoundStatusAndStringAsBody() {
 		// GIVEN
@@ -135,7 +150,7 @@ public class PatientApiControllerTest {
 		assertEquals("Patient with id: 1, not found in data base !", testResult.getBody());
 		assertEquals(HttpStatus.NOT_FOUND, testResult.getStatusCode());
 	}
-	
+
 	@Test
 	public void updatePatient_shouldReturnResponseEntityWithNotAcceptableStatusAndStringAsBody() {
 		// GIVEN
@@ -147,30 +162,30 @@ public class PatientApiControllerTest {
 		// THEN
 		assertEquals(HttpStatus.NOT_ACCEPTABLE, testResult.getStatusCode());
 	}
-	
+
 	@Test
 	public void deletePatient_shouldReturnResponseEntityWithOkStatusAndStringAsBody() {
 		// GIVEN
-		
-		// WHEN 
+
+		// WHEN
 		ResponseEntity<String> testResult = patientController.deletePatient(1);
-		
+
 		// THEN
 		assertEquals("Patient has been deleted from data base.", testResult.getBody());
 		assertEquals(HttpStatus.OK, testResult.getStatusCode());
 	}
-	
+
 	@Test
 	public void deletePatient_shouldReturnResponseEntityWithNotFoundStatusAndStringAsBody() {
 		// GIVEN
 		doThrow(PatientNotFoundException.class).when(patientService).deletePatient(1);
-		
-		// WHEN 
+
+		// WHEN
 		ResponseEntity<String> testResult = patientController.deletePatient(1);
-		
+
 		// THEN
 		assertEquals("Patient with id: 1, not found in data base !", testResult.getBody());
 		assertEquals(HttpStatus.NOT_FOUND, testResult.getStatusCode());
 	}
-	
+
 }

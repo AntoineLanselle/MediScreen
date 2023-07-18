@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mediscreen.patientApi.dto.PatientDto;
@@ -49,6 +50,23 @@ public class PatientApiController {
 		logger.info("GET request - getAllPatients");
 
 		return ResponseEntity.status(HttpStatus.OK).body(patientService.findAllPatients());
+	}
+	
+	/**
+	 * Retrieves a list of patients based on the specified firstname and lastname.
+	 * If both firstname and lastname are provided, it searches for patients matching both criteria.
+	 *
+	 * @param firstname the optional firstname parameter for filtering patients by firstname.
+	 * @param lastname  the optional lastname parameter for filtering patients by lastname.
+	 * 
+	 * @return a ResponseEntity with HTTP OK status containing a list of PatientDto objects matching the search criteria.
+	 */
+	@GetMapping("/patient/search")
+	public ResponseEntity<List<PatientDto>> searchPatients(@RequestParam(required = false) String firstname,
+			@RequestParam(required = false) String lastname) {
+		logger.info("GET request - searchPatients " + firstname + ", " + lastname);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(patientService.searchPatients(firstname, lastname));
 	}
 
 	/**
@@ -125,7 +143,7 @@ public class PatientApiController {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND)
 						.body("Patient with id: " + patientId + ", not found in data base !");
 			}
-			return ResponseEntity.status(HttpStatus.OK).body("Patient has been updated in data bbase.");
+			return ResponseEntity.status(HttpStatus.OK).body("Patient has been updated in data base.");
 		}
 	}
 

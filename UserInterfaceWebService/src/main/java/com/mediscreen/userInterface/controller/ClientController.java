@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mediscreen.userInterface.beans.PatientBean;
 import com.mediscreen.userInterface.proxies.PatientApiServiceProxy;
@@ -27,7 +28,7 @@ import jakarta.validation.Valid;
 public class ClientController {
 
 	private final PatientApiServiceProxy patientProxy;
-	
+
 	private Logger logger = LoggerFactory.getLogger(ClientController.class);
 
 	public ClientController(PatientApiServiceProxy patientProxy) {
@@ -35,17 +36,27 @@ public class ClientController {
 	}
 
 	/**
-	 * Handles the GET request for the patient list page.
+	 * Handles a GET request to retrieve the patient list page.
 	 *
-	 * @param model the model to be used for the view.
+	 * @param model     the Model object used to pass data to the view.
+	 * @param firstname the optional firstname parameter for filtering patients by
+	 *                  firstname.
+	 * @param lastname  the optional lastname parameter for filtering patients by
+	 *                  lastname.
 	 * 
 	 * @return the view name for the patient list page.
 	 */
 	@GetMapping("/patient")
-	public String patientListPage(Model model) {
+	public String patientListPage(Model model, @RequestParam(required = false) String firstname,
+			@RequestParam(required = false) String lastname) {
 		logger.info("GET request - get patient list page");
-		
-		List<PatientBean> patients = patientProxy.getAllPatients();
+
+		List<PatientBean> patients;
+		if (firstname != null || lastname != null) {
+			patients = patientProxy.searchPatients(firstname, lastname);
+		} else {
+			patients = patientProxy.getAllPatients();
+		}
 		model.addAttribute("patients", patients);
 		return "PatientList";
 	}
@@ -60,7 +71,7 @@ public class ClientController {
 	@GetMapping("/patient/add")
 	public String patientAddPage(Model model) {
 		logger.info("GET request - get patient add page");
-		
+
 		model.addAttribute("patientBean", new PatientBean());
 		return "PatientAdd";
 	}
@@ -76,7 +87,7 @@ public class ClientController {
 	@GetMapping("/patient/{id}")
 	public String patientDetailsPage(Model model, @PathVariable("id") int id) {
 		logger.info("GET request - get patient details page");
-		
+
 		model.addAttribute("patientBean", patientProxy.getPatient(id));
 		return "PatientDetails";
 	}
@@ -92,7 +103,7 @@ public class ClientController {
 	@PostMapping("/patient/add")
 	public String patientAdd(@Valid @ModelAttribute("patientBean") PatientBean patientBean, BindingResult result) {
 		logger.info("POST request - add patient" + patientBean.getGiven() + ", " + patientBean.getFamily());
-		
+
 		if (result.hasErrors()) {
 			return "PatientAdd";
 		} else {
@@ -115,9 +126,9 @@ public class ClientController {
 	public String patientUpdate(@Valid @ModelAttribute("patientBean") PatientBean patientBean, BindingResult result,
 			@PathVariable("id") int id) {
 		logger.info("POST request - update patient" + id);
-		
+
 		if (result.hasErrors()) {
-			return "redirect:/patient/" + id;
+			return "PatientDetails";
 		} else {
 			patientProxy.updatePatient(id, patientBean);
 			return "redirect:/patient/" + id + "?success";
@@ -135,7 +146,7 @@ public class ClientController {
 	@PostMapping("/patient/delete/{id}")
 	public String patientDelete(Model model, @PathVariable("id") int id) {
 		logger.info("POST request - delete patient" + id);
-		
+
 		try {
 			patientProxy.deletePatient(id);
 			return "redirect:/patient?delSuccess";

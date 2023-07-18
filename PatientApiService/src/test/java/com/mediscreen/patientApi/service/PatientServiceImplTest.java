@@ -56,6 +56,80 @@ public class PatientServiceImplTest {
 		assertEquals(listPatients, testResult);
 	}
 	
+	  @Test
+	    public void searchPatients_WithFirstnameAndLastname_ShouldReturnsMatchingPatient() {
+	        // GIVEN
+	        List<Patient> matchingPatients = new ArrayList<>();
+	        Patient patient2 = new Patient();
+	        patient2.setFirstname("Leo");
+	        patient2.setLastname("Delatour");
+	        matchingPatients.add(patient);
+	        matchingPatients.add(patient2);
+	        when(patientRepository.findByFirstnameContainingAndLastnameContaining("Jean", "Dumont"))
+	                .thenReturn(matchingPatients);
+
+	        // WHEN
+	        List<PatientDto> result = patientService.searchPatients("Jean", "Dumont");
+
+	        // THEN
+	        assertEquals(matchingPatients.size(), result.size());
+	    }
+
+	    @Test
+	    public void searchPatients_WithFirstnameOnly_ReturnsMatchingPatients() {
+	        // GIVEN
+	        List<Patient> matchingPatients = new ArrayList<>();
+	        Patient patient2 = new Patient();
+	        patient2.setFirstname("Leo");
+	        patient2.setLastname("Delatour");
+	        matchingPatients.add(patient);
+	        matchingPatients.add(patient2);
+	        when(patientRepository.findByFirstnameContaining("Jean")).thenReturn(matchingPatients);
+
+	        // WHEN
+	        List<PatientDto> result = patientService.searchPatients("Jean", null);
+
+	        // THEN
+	        assertEquals(matchingPatients.size(), result.size());
+	    }
+
+	    @Test
+	    public void searchPatients_WithLastnameOnly_ReturnsMatchingPatients() {
+	        // GIVEN
+	        List<Patient> matchingPatients = new ArrayList<>();
+	        Patient patient2 = new Patient();
+	        patient2.setFirstname("Leo");
+	        patient2.setLastname("Delatour");
+	        matchingPatients.add(patient);
+	        matchingPatients.add(patient2);
+	        when(patientRepository.findByLastnameContaining("Delatour"))
+	                .thenReturn(matchingPatients);
+
+	        // WHEN
+	        List<PatientDto> result = patientService.searchPatients(null, "Delatour");
+
+	        // THEN
+	        assertEquals(matchingPatients.size(), result.size());
+	    }
+
+	    @Test
+	    public void testSearchPatients_WithoutParameters_ReturnsAllPatients() {
+	        // GIVEN
+	        List<Patient> allPatients = new ArrayList<>();
+	        Patient patient2 = new Patient();
+	        patient2.setFirstname("Leo");
+	        patient2.setLastname("Delatour");
+	        allPatients.add(patient);
+	        allPatients.add(patient2);
+	        when(patientRepository.findAll()).thenReturn(allPatients);
+
+	        // WHEN
+	        List<PatientDto> result = patientService.searchPatients(null, null);
+
+	        // THEN
+	        assertEquals(allPatients.size(), result.size());
+	    }
+	
 	@Test
 	public void findPatientById_shouldReturnSpecificPatientDto() {
 		// GIVEN

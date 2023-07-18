@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mediscreen.userInterface.beans.PatientBean;
 
@@ -24,6 +25,10 @@ public interface PatientApiServiceProxy {
 
 	@GetMapping("/patient")
 	public List<PatientBean> getAllPatients();
+
+	@GetMapping("/patient/search")
+	public List<PatientBean> searchPatients(@RequestParam(required = false) String firstname,
+			@RequestParam(required = false) String lastname);
 
 	@GetMapping("/patient/{id}")
 	public PatientBean getPatient(@PathVariable("id") int patientId);

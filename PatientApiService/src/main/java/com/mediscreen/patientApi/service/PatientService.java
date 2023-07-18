@@ -13,6 +13,8 @@ import com.mediscreen.patientApi.exception.PatientNotFoundException;
 public interface PatientService {
 
 	public List<PatientDto> findAllPatients();
+	
+	public List<PatientDto> searchPatients(String firstname, String lastname);
 
 	public PatientDto findPatientById(int patientId) throws PatientNotFoundException;
 
