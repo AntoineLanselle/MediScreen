@@ -2,6 +2,8 @@ package com.mediscreen.userInterface.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,6 +27,8 @@ import jakarta.validation.Valid;
 public class ClientController {
 
 	private final PatientApiServiceProxy patientProxy;
+	
+	private Logger logger = LoggerFactory.getLogger(ClientController.class);
 
 	public ClientController(PatientApiServiceProxy patientProxy) {
 		this.patientProxy = patientProxy;
@@ -39,6 +43,8 @@ public class ClientController {
 	 */
 	@GetMapping("/patient")
 	public String patientListPage(Model model) {
+		logger.info("GET request - get patient list page");
+		
 		List<PatientBean> patients = patientProxy.getAllPatients();
 		model.addAttribute("patients", patients);
 		return "PatientList";
@@ -53,6 +59,8 @@ public class ClientController {
 	 */
 	@GetMapping("/patient/add")
 	public String patientAddPage(Model model) {
+		logger.info("GET request - get patient add page");
+		
 		model.addAttribute("patientBean", new PatientBean());
 		return "PatientAdd";
 	}
@@ -67,6 +75,8 @@ public class ClientController {
 	 */
 	@GetMapping("/patient/{id}")
 	public String patientDetailsPage(Model model, @PathVariable("id") int id) {
+		logger.info("GET request - get patient details page");
+		
 		model.addAttribute("patientBean", patientProxy.getPatient(id));
 		return "PatientDetails";
 	}
@@ -81,6 +91,8 @@ public class ClientController {
 	 */
 	@PostMapping("/patient/add")
 	public String patientAdd(@Valid @ModelAttribute("patientBean") PatientBean patientBean, BindingResult result) {
+		logger.info("POST request - add patient" + patientBean.getGiven() + ", " + patientBean.getFamily());
+		
 		if (result.hasErrors()) {
 			return "PatientAdd";
 		} else {
@@ -102,6 +114,8 @@ public class ClientController {
 	@PostMapping("/patient/{id}")
 	public String patientUpdate(@Valid @ModelAttribute("patientBean") PatientBean patientBean, BindingResult result,
 			@PathVariable("id") int id) {
+		logger.info("POST request - update patient" + id);
+		
 		if (result.hasErrors()) {
 			return "redirect:/patient/" + id;
 		} else {
@@ -120,6 +134,8 @@ public class ClientController {
 	 */
 	@PostMapping("/patient/delete/{id}")
 	public String patientDelete(Model model, @PathVariable("id") int id) {
+		logger.info("POST request - delete patient" + id);
+		
 		try {
 			patientProxy.deletePatient(id);
 			return "redirect:/patient?delSuccess";
