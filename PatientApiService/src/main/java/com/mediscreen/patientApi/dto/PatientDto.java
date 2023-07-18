@@ -8,8 +8,10 @@ import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 
 /**
- * PatientDTO .
- *
+ * Data Transfer Object (DTO) for representing a Patient. Contains patient
+ * information used for communication between different layers of the
+ * application.
+ * 
  * @author Antoine Lanselle
  */
 public class PatientDto {

@@ -13,6 +13,12 @@ import com.mediscreen.patientApi.dto.PatientDto;
 import com.mediscreen.patientApi.exception.PatientNotFoundException;
 import com.mediscreen.patientApi.repository.PatientRepository;
 
+/**
+ * Implementation of the PatientService interface. This class provides the
+ * actual implementation for managing patients.
+ * 
+ * @author Antoine Lanselle
+ */
 @Service
 public class PatientServiceImpl implements PatientService {
 
@@ -22,7 +28,9 @@ public class PatientServiceImpl implements PatientService {
 	private PatientRepository patientRepository;
 
 	/**
-	 * 
+	 * Retrieves a list of all patients.
+	 *
+	 * @return a list of PatientDto objects representing all patients.
 	 */
 	@Override
 	public List<PatientDto> findAllPatients() {
@@ -30,13 +38,20 @@ public class PatientServiceImpl implements PatientService {
 
 		List<Patient> allPatients = patientRepository.findAll();
 		List<PatientDto> allPatientsDto = new ArrayList<>();
-		for(Patient patient : allPatients) allPatientsDto.add(new PatientDto(patient));
-		
+		for (Patient patient : allPatients)
+			allPatientsDto.add(new PatientDto(patient));
+
 		return allPatientsDto;
 	}
-	
+
 	/**
+	 * Retrieves a patient by their ID.
+	 *
+	 * @param patientId the ID of the patient to retrieve.
 	 * 
+	 * @return the PatientDto object representing the patient with the specified ID.
+	 * @throws PatientNotFoundException if the patient with the specified ID is not
+	 *                                  found.
 	 */
 	@Override
 	public PatientDto findPatientById(int patientId) throws PatientNotFoundException {
@@ -52,9 +67,11 @@ public class PatientServiceImpl implements PatientService {
 			return new PatientDto(patient);
 		}
 	}
-	
+
 	/**
-	 * 
+	 * Adds a new patient to the database.
+	 *
+	 * @param patientDto the PatientDto object representing the patient to add.
 	 */
 	@Override
 	public void addPatient(PatientDto patientDto) {
@@ -63,8 +80,14 @@ public class PatientServiceImpl implements PatientService {
 	}
 
 	/**
-	 * @throws PatientNotFoundException
+	 * Updates an existing patient with new information in the database.
+	 *
+	 * @param patientId       the ID of the patient to update.
+	 * @param newPatientInfos the PatientDto object containing the updated patient
+	 *                        information.
 	 * 
+	 * @throws PatientNotFoundException if the patient with the specified ID is not
+	 *                                  found.
 	 */
 	@Override
 	public void updatePatient(int patientId, PatientDto newPatientInfos) throws PatientNotFoundException {
@@ -86,15 +109,19 @@ public class PatientServiceImpl implements PatientService {
 			patient.setGender(newPatientInfos.getSex());
 			patient.setAddress(newPatientInfos.getAddress());
 			patient.setPhone(newPatientInfos.getPhone());
-			
+
 			logger.info("Updating patient in data base.");
 			patientRepository.save(patient);
 		}
 	}
 
 	/**
-	 * @throws PatientNotFoundException
+	 * Deletes a patient from the database.
+	 *
+	 * @param patientId the ID of the patient to delete.
 	 * 
+	 * @throws PatientNotFoundException if the patient with the specified ID is not
+	 *                                  found.
 	 */
 	@Override
 	public void deletePatient(int patientId) throws PatientNotFoundException {

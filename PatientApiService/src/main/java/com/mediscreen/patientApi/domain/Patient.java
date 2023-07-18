@@ -12,7 +12,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 /**
- * Patient.
+ * Represents a Patient entity in the system. Stores information about a
+ * patient.
  *
  * @author Antoine Lanselle
  */

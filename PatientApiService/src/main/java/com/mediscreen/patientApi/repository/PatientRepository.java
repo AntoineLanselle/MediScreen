@@ -6,7 +6,9 @@ import org.springframework.stereotype.Repository;
 import com.mediscreen.patientApi.domain.Patient;
 
 /**
- * Repository of Patients.
+ * Repository interface for managing patients in the database. This interface
+ * extends the JpaRepository interface provided by Spring Data JPA, which
+ * provides CRUD operations for the Patient entity.
  *
  * @author Antoine Lanselle
  */

@@ -15,6 +15,12 @@ import com.mediscreen.userInterface.proxies.PatientApiServiceProxy;
 
 import jakarta.validation.Valid;
 
+/**
+ * ClientController is a controller class that handles requests related to
+ * patient management.
+ * 
+ * @author Antoine Lanselle
+ */
 @Controller
 public class ClientController {
 
@@ -24,6 +30,13 @@ public class ClientController {
 		this.patientProxy = patientProxy;
 	}
 
+	/**
+	 * Handles the GET request for the patient list page.
+	 *
+	 * @param model the model to be used for the view.
+	 * 
+	 * @return the view name for the patient list page.
+	 */
 	@GetMapping("/patient")
 	public String patientListPage(Model model) {
 		List<PatientBean> patients = patientProxy.getAllPatients();
@@ -31,18 +44,41 @@ public class ClientController {
 		return "PatientList";
 	}
 
+	/**
+	 * Handles the GET request for the patient add page.
+	 *
+	 * @param model the model to be used for the view.
+	 * 
+	 * @return the view name for the patient add page.
+	 */
 	@GetMapping("/patient/add")
 	public String patientAddPage(Model model) {
 		model.addAttribute("patientBean", new PatientBean());
 		return "PatientAdd";
 	}
-	
+
+	/**
+	 * Handles the GET request for the patient details page.
+	 *
+	 * @param model the model to be used for the view.
+	 * @param id    the ID of the patient to be displayed.
+	 * 
+	 * @return the view name for the patient details page.
+	 */
 	@GetMapping("/patient/{id}")
 	public String patientDetailsPage(Model model, @PathVariable("id") int id) {
 		model.addAttribute("patientBean", patientProxy.getPatient(id));
 		return "PatientDetails";
 	}
 
+	/**
+	 * Handles the POST request for adding a patient.
+	 *
+	 * @param patientBean the PatientBean object containing the patient data.
+	 * @param result      the binding result for data validation.
+	 * 
+	 * @return the view name to redirect after adding the patient.
+	 */
 	@PostMapping("/patient/add")
 	public String patientAdd(@Valid @ModelAttribute("patientBean") PatientBean patientBean, BindingResult result) {
 		if (result.hasErrors()) {
@@ -52,7 +88,17 @@ public class ClientController {
 			return "redirect:/patient?addSuccess";
 		}
 	}
-	
+
+	/**
+	 * Handles the POST request for updating a patient.
+	 *
+	 * @param patientBean the PatientBean object containing the updated patient
+	 *                    data.
+	 * @param result      the binding result for data validation.
+	 * @param id          the ID of the patient to be updated.
+	 * 
+	 * @return the view name to redirect after updating the patient.
+	 */
 	@PostMapping("/patient/{id}")
 	public String patientUpdate(@Valid @ModelAttribute("patientBean") PatientBean patientBean, BindingResult result,
 			@PathVariable("id") int id) {
@@ -64,6 +110,14 @@ public class ClientController {
 		}
 	}
 
+	/**
+	 * Handles the POST request for deleting a patient.
+	 *
+	 * @param model the model to be used for the view.
+	 * @param id    the ID of the patient to be deleted.
+	 * 
+	 * @return the view name to redirect after deleting the patient.
+	 */
 	@PostMapping("/patient/delete/{id}")
 	public String patientDelete(Model model, @PathVariable("id") int id) {
 		try {

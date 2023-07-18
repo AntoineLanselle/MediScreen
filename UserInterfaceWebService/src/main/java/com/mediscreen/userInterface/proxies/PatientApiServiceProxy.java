@@ -12,7 +12,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.mediscreen.userInterface.beans.PatientBean;
 
-
+/**
+ * PatientApiServiceProxy is a Feign client interface for making API calls to
+ * the Patient API service. It defines the endpoints and HTTP methods to
+ * interact with the patient related operations.
+ * 
+ * @author Antoine Lanselle
+ */
 @FeignClient(name = "PatientApiService", url = "localhost:8081")
 public interface PatientApiServiceProxy {
 
@@ -21,7 +27,7 @@ public interface PatientApiServiceProxy {
 
 	@GetMapping("/patient/{id}")
 	public PatientBean getPatient(@PathVariable("id") int patientId);
-	
+
 	@PostMapping("/patient/add")
 	public String addPatient(@RequestBody PatientBean patientDto);
 

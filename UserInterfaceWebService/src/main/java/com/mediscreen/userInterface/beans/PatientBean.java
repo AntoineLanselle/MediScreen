@@ -5,6 +5,11 @@ import java.time.LocalDate;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 
+/**
+ * PatientBean represents a patient's data used in the user interface.
+ * 
+ * @author Antoine Lanselle
+ */
 public class PatientBean {
 
 	private int id;
@@ -61,7 +66,7 @@ public class PatientBean {
 	public void setDob(String dob) {
 		this.dob = LocalDate.parse(dob);
 	}
-	
+
 	public void setDob(LocalDate dob) {
 		this.dob = dob;
 	}

@@ -3,6 +3,12 @@
 <head>
 <title>MediScreen - Patient List</title>
 <link rel="stylesheet" type="text/css" href="/css/styles.css" />
+<script>
+	function redirectToPatientDetails(row) {
+		var url = row.getAttribute('data-url');
+		window.location.href = url;
+	}
+</script>
 </head>
 
 <body>
@@ -41,10 +47,11 @@
 					<th>Date Of Birth</th>
 					<th>Address</th>
 					<th>Phone</th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="patient: ${patients}" >
+				<tr th:each="patient: ${patients}"  th:data-url="@{/patient/{id}(id=${patient.id})}" onclick="redirectToPatientDetails(this)">
 					<td th:text="${patient.id}" />
 					<td th:text="${patient.given}" />
 					<td th:text="${patient.family}" />
@@ -52,8 +59,6 @@
 					<td th:text="${patient.dob}" />
 					<td th:text="${patient.address}" />
 					<td th:text="${patient.phone}" />
-					<!-- ci-dessous : ce td est provisoire -->
-					<td><a th:href="@{/patient/{id}(id=${patient.id})}">View</a></td>
 					<td>
 						<form method="POST" th:action="@{/patient/delete/{id}(id=${patient.id})}">
 							<button type="submit" formmethod="POST">X</button>
