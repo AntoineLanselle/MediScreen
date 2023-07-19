@@ -46,13 +46,13 @@
 					<div th:case="F">
 						<input class="sec-2" id="sexChoice1" name="sex" type="radio" value="F" th:field="*{sex}" checked required />
 						<label for="sexChoice1">Female</label> 
-						<input class="sec-2" id="sexChoice2" name="sex" type="radio" value="H" th:field="*{sex}" required /> 
+						<input class="sec-2" id="sexChoice2" name="sex" type="radio" value="M" th:field="*{sex}" required /> 
 						<label for="sexChoice2">Male</label> 
 					</div>
-					<div th:case="H">
+					<div th:case="M">
 						<input class="sec-2" id="sexChoice1" name="sex" type="radio" value="F" th:field="*{sex}" required />
 						<label for="sexChoice1">Female</label> 
-						<input class="sec-2" id="sexChoice2" name="sex" type="radio" value="H" th:field="*{sex}" checked required /> 
+						<input class="sec-2" id="sexChoice2" name="sex" type="radio" value="M" th:field="*{sex}" checked required /> 
 						<label for="sexChoice2">Male</label> 
 					</div>
 					<p class="error" th:if="${#fields.hasErrors('sex')}" th:errors="*{sex}"></p>

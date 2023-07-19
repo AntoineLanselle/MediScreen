@@ -23,7 +23,7 @@ public class PatientBean {
 	@Past(message = "Date Of Birth is not valid.")
 	private LocalDate dob;
 
-	@Pattern(regexp = "^[F|H]{1}$", message = "Gender must be H or F.")
+	@Pattern(regexp = "^[F|M]{1}$", message = "Gender must be M or F.")
 	private String sex;
 
 	@Pattern(regexp = "^([\\w\\s]{2,255}|)$", message = "Address must be alphanumeric characters.")

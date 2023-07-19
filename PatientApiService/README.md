@@ -8,10 +8,20 @@ It allows retrieving, adding, updating, and deleting patient records.
 To run the PatientApiService application, follow these steps:
 
 1. Ensure you have a MySQL database set up and running.
+
 2. Update the database configuration in the application.properties file located in the src/main/resources directory with your MySQL database credentials.
-3. Build the application using Maven or your preferred build tool.
-4. Run the application using the main class PatientApiApplication.java.
-5. The application will start running on http://localhost:8081.
+
+3. Run this command in your SGBD to run the sql script:
+```
+	source path/to/application/MediScreen/PatientApiService/src/main/resources/scripts/data_base_structure.sql
+```
+4. Build the application using Maven or your preferred build tool.
+
+5. Run the application using the main class PatientApiApplication.java.
+
+6. The application will start running on http://localhost:8081.
+
+7. If you want to add patients to your database you can simply double-click on the script add_patient.sh.
 
 ## API Endpoints
 
