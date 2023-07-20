@@ -105,10 +105,10 @@ public class PatientApiControllerTest {
 		when(bindingResult.hasErrors()).thenReturn(false);
 		
 		// WHEN 
-		ResponseEntity<String> testResult = patientController.addPatient(patientDto, bindingResult);
+		ResponseEntity<String> testResult = patientController.addPatientJson(patientDto, bindingResult);
 		
 		// THEN
-		assertEquals("Patient has been added in data base.", testResult.getBody());
+		assertEquals("Patient has been added in the data base.", testResult.getBody());
 		assertEquals(HttpStatus.CREATED, testResult.getStatusCode());
 	}
 
@@ -118,7 +118,7 @@ public class PatientApiControllerTest {
 		when(bindingResult.hasErrors()).thenReturn(true);
 		
 		// WHEN 
-		ResponseEntity<String> testResult = patientController.addPatient(patientDto, bindingResult);
+		ResponseEntity<String> testResult = patientController.addPatientJson(patientDto, bindingResult);
 		
 		// THEN
 		assertEquals(HttpStatus.NOT_ACCEPTABLE, testResult.getStatusCode());

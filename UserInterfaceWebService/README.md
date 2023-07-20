@@ -9,8 +9,11 @@ The UI interacts with the Patient API service to retrieve and manipulate the dat
 To run the UserInterface application, follow these steps:
 
 1.Ensure that the required dependencies are installed and configured properly.
+
 2.Start the Patient API service on localhost:8081.
+
 3.Build and run the UserInterface application using your preferred IDE or by running the UserInterfaceWebServiceApplication class.
+
 4.Access the application in your web browser at localhost:8080/patient.
 
 ## Dependencies

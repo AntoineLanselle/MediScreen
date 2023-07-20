@@ -6,10 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -91,27 +93,63 @@ public class PatientApiController {
 	}
 
 	/**
-	 * Adds a new patient to the database.
+	 * Add a new patient using JSON data format.
 	 *
 	 * @param patientDto a PatientDto object containing the patient's informations.
 	 * @param result     the BindingResult object that holds the validation result
 	 *                   of the request body.
-	 * 
+	 *
 	 * @return a ResponseEntity with HTTP status and a message indicating the result
 	 *         of the operation. If the request body has validation errors, returns
 	 *         HTTP NOT_ACCEPTABLE status. If the patient is added successfully,
 	 *         returns HTTP CREATED status.
 	 */
-	@PostMapping("/patient/add")
-	public ResponseEntity<String> addPatient(@Valid @RequestBody PatientDto patientDto, BindingResult result) {
-		logger.info("POST request - addPatient " + patientDto.getFamily() + ", " + patientDto.getGiven());
+	@PostMapping(path = "/patient/add", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> addPatientJson(@Valid @RequestBody PatientDto patientDto, BindingResult result) {
+		logger.info("POST request - addPatient using Json " + patientDto.getFamily() + ", " + patientDto.getGiven());
+		
+	    return addPatientInternal(patientDto, result);
+	}
 
-		if (result.hasErrors()) {
-			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(result.getAllErrors().toString());
-		} else {
-			patientService.addPatient(patientDto);
-			return ResponseEntity.status(HttpStatus.CREATED).body("Patient has been added in data base.");
-		}
+	/**
+	 * Add a new patient using URL-encoded form data format.
+	 *
+	 * @param patientDto a PatientDto object containing the patient's informations.
+	 * @param result     the BindingResult object that holds the validation result
+	 *                   of the request body.
+	 *
+	 * @return a ResponseEntity with HTTP status and a message indicating the result
+	 *         of the operation. If the request body has validation errors, returns
+	 *         HTTP NOT_ACCEPTABLE status. If the patient is added successfully,
+	 *         returns HTTP CREATED status.
+	 */
+	@PostMapping(path = "/patient/add", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public ResponseEntity<String> addPatientUrl(@Valid @ModelAttribute PatientDto patientDto, BindingResult result) {
+		logger.info("POST request - addPatient using URL encoded " + patientDto.getFamily() + ", " + patientDto.getGiven());
+		
+	    return addPatientInternal(patientDto, result);
+	}
+
+	/**
+	 * Internal method to add a new patient to the system.
+	 *
+	 * @param patientDto a PatientDto object containing the patient's informations.
+	 * @param result     the BindingResult object that holds the validation result
+	 *                   of the request body.
+	 *
+	 * @return a ResponseEntity with HTTP status and a message indicating the result
+	 *         of the operation. If the request body has validation errors, returns
+	 *         HTTP NOT_ACCEPTABLE status. If the patient is added successfully,
+	 *         returns HTTP CREATED status.
+	 */
+	private ResponseEntity<String> addPatientInternal(PatientDto patientDto, BindingResult result) {
+
+	    if (result.hasErrors()) {
+	        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(result.getAllErrors().toString());
+	    } else {
+	        patientService.addPatient(patientDto);
+	        return ResponseEntity.status(HttpStatus.CREATED).body("Patient has been added in the data base.");
+	    }
 	}
 
 	/**

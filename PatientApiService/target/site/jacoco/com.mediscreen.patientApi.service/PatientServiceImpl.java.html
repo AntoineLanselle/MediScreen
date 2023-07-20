@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PatientServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PatientApiService</a> &gt; <a href="index.source.html" class="el_package">com.mediscreen.patientApi.service</a> &gt; <span class="el_source">PatientServiceImpl.java</span></div><h1>PatientServiceImpl.java</h1><pre class="source lang-java linenums">package com.mediscreen.patientApi.service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.mediscreen.patientApi.domain.Patient;
+import com.mediscreen.patientApi.dto.PatientDto;
+import com.mediscreen.patientApi.exception.PatientNotFoundException;
+import com.mediscreen.patientApi.repository.PatientRepository;
+
+/**
+ * Implementation of the PatientService interface. This class provides the
+ * actual implementation for managing patients.
+ * 
+ * @author Antoine Lanselle
+ */
+@Service
+<span class="fc" id="L23">public class PatientServiceImpl implements PatientService {</span>
+
+<span class="fc" id="L25">	private Logger logger = LoggerFactory.getLogger(PatientServiceImpl.class);</span>
+
+	@Autowired
+	private PatientRepository patientRepository;
+
+	/**
+	 * Retrieves a list of all patients.
+	 *
+	 * @return a list of PatientDto objects representing all patients.
+	 */
+	@Override
+	public List&lt;PatientDto&gt; findAllPatients() {
+<span class="fc" id="L37">		logger.info(&quot;Getting all patients in data base.&quot;);</span>
+
+<span class="fc" id="L39">		List&lt;Patient&gt; allPatients = patientRepository.findAll();</span>
+<span class="fc" id="L40">		List&lt;PatientDto&gt; allPatientsDto = allPatients.stream().map(PatientDto::new).collect(Collectors.toList());</span>
+
+<span class="fc" id="L42">		return allPatientsDto;</span>
+	}
+
+	/**
+	 * Searches for patients in the database based on the provided firstname and lastname.
+	 * If both firstname and lastname are provided, it searches for patients matching both criteria.
+	 *
+	 * @param firstname the firstname parameter for filtering patients by firstname.
+	 * @param lastname  the lastname parameter for filtering patients by lastname.
+	 * 
+	 * @return a list of PatientDto objects representing the patients matching the search criteria.
+	 */
+	@Override
+	public List&lt;PatientDto&gt; searchPatients(String firstname, String lastname) {
+
+		List&lt;Patient&gt; patients;
+<span class="fc bfc" id="L58" title="All 4 branches covered.">		if (firstname != null &amp;&amp; lastname != null) {</span>
+<span class="fc" id="L59">			patients = patientRepository.findByFirstnameContainingAndLastnameContaining(firstname, lastname);</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">		} else if (firstname != null) {</span>
+<span class="fc" id="L61">			patients = patientRepository.findByFirstnameContaining(firstname);</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">		} else if (lastname != null) {</span>
+<span class="fc" id="L63">			patients = patientRepository.findByLastnameContaining(lastname);</span>
+		} else {
+<span class="fc" id="L65">			patients = patientRepository.findAll();</span>
+		}
+
+<span class="fc" id="L68">		List&lt;PatientDto&gt; patientDtos = patients.stream().map(PatientDto::new).collect(Collectors.toList());</span>
+
+<span class="fc" id="L70">		return patientDtos;</span>
+	}
+
+	/**
+	 * Retrieves a patient by their ID.
+	 *
+	 * @param patientId the ID of the patient to retrieve.
+	 * 
+	 * @return the PatientDto object representing the patient with the specified ID.
+	 * @throws PatientNotFoundException if the patient with the specified ID is not
+	 *                                  found.
+	 */
+	@Override
+	public PatientDto findPatientById(int patientId) throws PatientNotFoundException {
+<span class="fc" id="L84">		logger.info(&quot;Trying to find patient by id in data base.&quot;);</span>
+
+<span class="fc" id="L86">		Patient patient = patientRepository.findById(patientId);</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">		if (patient == null) {</span>
+<span class="fc" id="L88">			String error = &quot;Patient: &quot; + patientId + &quot; not found in data base !&quot;;</span>
+<span class="fc" id="L89">			logger.error(error);</span>
+<span class="fc" id="L90">			throw new PatientNotFoundException(error);</span>
+		} else {
+<span class="fc" id="L92">			logger.info(&quot;Patient has been found in data base.&quot;);</span>
+<span class="fc" id="L93">			return new PatientDto(patient);</span>
+		}
+	}
+
+	/**
+	 * Adds a new patient to the database.
+	 *
+	 * @param patientDto the PatientDto object representing the patient to add.
+	 */
+	@Override
+	public void addPatient(PatientDto patientDto) {
+<span class="fc" id="L104">		logger.info(&quot;Adding patient in data base.&quot;);</span>
+<span class="fc" id="L105">		patientRepository.save(new Patient(patientDto));</span>
+<span class="fc" id="L106">	}</span>
+
+	/**
+	 * Updates an existing patient with new information in the database.
+	 *
+	 * @param patientId       the ID of the patient to update.
+	 * @param newPatientInfos the PatientDto object containing the updated patient
+	 *                        information.
+	 * 
+	 * @throws PatientNotFoundException if the patient with the specified ID is not
+	 *                                  found.
+	 */
+	@Override
+	public void updatePatient(int patientId, PatientDto newPatientInfos) throws PatientNotFoundException {
+<span class="fc" id="L120">		logger.info(&quot;Trying to update patient in data base.&quot;);</span>
+
+<span class="fc" id="L122">		Patient patient = patientRepository.findById(patientId);</span>
+
+<span class="fc bfc" id="L124" title="All 2 branches covered.">		if (patient == null) {</span>
+
+<span class="fc" id="L126">			String error = &quot;Patient: &quot; + patientId + &quot; not found in data base !&quot;;</span>
+<span class="fc" id="L127">			logger.error(error);</span>
+<span class="fc" id="L128">			throw new PatientNotFoundException(error);</span>
+
+		} else {
+
+<span class="fc" id="L132">			patient.setFirstname(newPatientInfos.getGiven());</span>
+<span class="fc" id="L133">			patient.setLastname(newPatientInfos.getFamily());</span>
+<span class="fc" id="L134">			patient.setDateOfBirth(newPatientInfos.getDob());</span>
+<span class="fc" id="L135">			patient.setGender(newPatientInfos.getSex());</span>
+<span class="fc" id="L136">			patient.setAddress(newPatientInfos.getAddress());</span>
+<span class="fc" id="L137">			patient.setPhone(newPatientInfos.getPhone());</span>
+
+<span class="fc" id="L139">			logger.info(&quot;Updating patient in data base.&quot;);</span>
+<span class="fc" id="L140">			patientRepository.save(patient);</span>
+		}
+<span class="fc" id="L142">	}</span>
+
+	/**
+	 * Deletes a patient from the database.
+	 *
+	 * @param patientId the ID of the patient to delete.
+	 * 
+	 * @throws PatientNotFoundException if the patient with the specified ID is not
+	 *                                  found.
+	 */
+	@Override
+	public void deletePatient(int patientId) throws PatientNotFoundException {
+<span class="fc" id="L154">		logger.info(&quot;Trying to delete patient in data base.&quot;);</span>
+
+<span class="fc" id="L156">		PatientDto patient = findPatientById(patientId);</span>
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">		if (patient == null) {</span>
+<span class="nc" id="L158">			String error = &quot;Patient: &quot; + patientId + &quot; not found in data base !&quot;;</span>
+<span class="nc" id="L159">			logger.error(error);</span>
+<span class="nc" id="L160">			throw new PatientNotFoundException(error);</span>
+		} else {
+<span class="fc" id="L162">			logger.info(&quot;Deleting patient in data base.&quot;);</span>
+<span class="fc" id="L163">			patientRepository.deleteById(patientId);</span>
+		}
+<span class="fc" id="L165">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

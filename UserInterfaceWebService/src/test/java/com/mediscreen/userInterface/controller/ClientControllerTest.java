@@ -106,7 +106,7 @@ public class ClientControllerTest {
 
 		// THEN
 		assertEquals("redirect:/patient?addSuccess", testResult);
-		verify(patientProxy, times(1)).addPatient(patient);
+		verify(patientProxy, times(1)).addPatientJson(patient);
 	}
 	
 	@Test
@@ -120,7 +120,7 @@ public class ClientControllerTest {
 
 		// THEN
 		assertEquals("PatientAdd", testResult);
-		verify(patientProxy, never()).addPatient(patient);
+		verify(patientProxy, never()).addPatientJson(patient);
 	}
 	
 	@Test

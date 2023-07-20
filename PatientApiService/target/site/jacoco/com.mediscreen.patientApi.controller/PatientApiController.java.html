@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PatientApiController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PatientApiService</a> &gt; <a href="index.source.html" class="el_package">com.mediscreen.patientApi.controller</a> &gt; <span class="el_source">PatientApiController.java</span></div><h1>PatientApiController.java</h1><pre class="source lang-java linenums">package com.mediscreen.patientApi.controller;
+
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.mediscreen.patientApi.dto.PatientDto;
+import com.mediscreen.patientApi.exception.PatientNotFoundException;
+import com.mediscreen.patientApi.service.PatientService;
+
+import jakarta.validation.Valid;
+
+/**
+ * Controller class for managing patient-related API endpoints. Handles requests
+ * for retrieving, adding, updating, and deleting patients. Uses the
+ * PatientService for handling the business logic. Maps incoming requests to the
+ * appropriate methods and returns the corresponding responses.
+ * 
+ * @author Antoine Lanselle
+ */
+@RestController
+<span class="fc" id="L37">public class PatientApiController {</span>
+
+<span class="fc" id="L39">	private Logger logger = LoggerFactory.getLogger(PatientApiController.class);</span>
+
+	@Autowired
+	public PatientService patientService;
+
+	/**
+	 * Retrieves all patients.
+	 *
+	 * @return a ResponseEntity with HTTP OK status and a list of patients as the
+	 *         response body.
+	 */
+	@GetMapping(&quot;/patient&quot;)
+	public ResponseEntity&lt;List&lt;PatientDto&gt;&gt; getAllPatients() {
+<span class="fc" id="L52">		logger.info(&quot;GET request - getAllPatients&quot;);</span>
+
+<span class="fc" id="L54">		return ResponseEntity.status(HttpStatus.OK).body(patientService.findAllPatients());</span>
+	}
+	
+	/**
+	 * Retrieves a list of patients based on the specified firstname and lastname.
+	 * If both firstname and lastname are provided, it searches for patients matching both criteria.
+	 *
+	 * @param firstname the optional firstname parameter for filtering patients by firstname.
+	 * @param lastname  the optional lastname parameter for filtering patients by lastname.
+	 * 
+	 * @return a ResponseEntity with HTTP OK status containing a list of PatientDto objects matching the search criteria.
+	 */
+	@GetMapping(&quot;/patient/search&quot;)
+	public ResponseEntity&lt;List&lt;PatientDto&gt;&gt; searchPatients(@RequestParam(required = false) String firstname,
+			@RequestParam(required = false) String lastname) {
+<span class="fc" id="L69">		logger.info(&quot;GET request - searchPatients &quot; + firstname + &quot;, &quot; + lastname);</span>
+		
+<span class="fc" id="L71">		return ResponseEntity.status(HttpStatus.OK).body(patientService.searchPatients(firstname, lastname));</span>
+	}
+
+	/**
+	 * Retrieves a patient by their ID.
+	 *
+	 * @param patientId the ID of the patient to retrieve.
+	 * 
+	 * @return a ResponseEntity with HTTP OK status and the retrieved patient as the
+	 *         response body. If the patient is not found, returns HTTP NOT_FOUND
+	 *         status.
+	 */
+	@GetMapping(&quot;/patient/{id}&quot;)
+	public ResponseEntity&lt;PatientDto&gt; getPatient(@PathVariable(&quot;id&quot;) int patientId) {
+<span class="fc" id="L85">		logger.info(&quot;GET request - getPatient &quot; + patientId);</span>
+
+		try {
+<span class="fc" id="L88">			PatientDto patient = patientService.findPatientById(patientId);</span>
+<span class="fc" id="L89">			return ResponseEntity.status(HttpStatus.OK).body(patient);</span>
+<span class="fc" id="L90">		} catch (PatientNotFoundException ex) {</span>
+<span class="fc" id="L91">			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();</span>
+		}
+	}
+
+	/**
+	 * Add a new patient using JSON data format.
+	 *
+	 * @param patientDto a PatientDto object containing the patient's informations.
+	 * @param result     the BindingResult object that holds the validation result
+	 *                   of the request body.
+	 *
+	 * @return a ResponseEntity with HTTP status and a message indicating the result
+	 *         of the operation. If the request body has validation errors, returns
+	 *         HTTP NOT_ACCEPTABLE status. If the patient is added successfully,
+	 *         returns HTTP CREATED status.
+	 */
+	@PostMapping(path = &quot;/patient/add&quot;, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity&lt;String&gt; addPatientJson(@Valid @RequestBody PatientDto patientDto, BindingResult result) {
+<span class="fc" id="L109">		logger.info(&quot;POST request - addPatient using Json &quot; + patientDto.getFamily() + &quot;, &quot; + patientDto.getGiven());</span>
+		
+<span class="fc" id="L111">	    return addPatientInternal(patientDto, result);</span>
+	}
+
+	/**
+	 * Add a new patient using URL-encoded form data format.
+	 *
+	 * @param patientDto a PatientDto object containing the patient's informations.
+	 * @param result     the BindingResult object that holds the validation result
+	 *                   of the request body.
+	 *
+	 * @return a ResponseEntity with HTTP status and a message indicating the result
+	 *         of the operation. If the request body has validation errors, returns
+	 *         HTTP NOT_ACCEPTABLE status. If the patient is added successfully,
+	 *         returns HTTP CREATED status.
+	 */
+	@PostMapping(path = &quot;/patient/add&quot;, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public ResponseEntity&lt;String&gt; addPatientUrl(@Valid @ModelAttribute PatientDto patientDto, BindingResult result) {
+<span class="nc" id="L128">		logger.info(&quot;POST request - addPatient using URL encoded &quot; + patientDto.getFamily() + &quot;, &quot; + patientDto.getGiven());</span>
+		
+<span class="nc" id="L130">	    return addPatientInternal(patientDto, result);</span>
+	}
+
+	/**
+	 * Internal method to add a new patient to the system.
+	 *
+	 * @param patientDto a PatientDto object containing the patient's informations.
+	 * @param result     the BindingResult object that holds the validation result
+	 *                   of the request body.
+	 *
+	 * @return a ResponseEntity with HTTP status and a message indicating the result
+	 *         of the operation. If the request body has validation errors, returns
+	 *         HTTP NOT_ACCEPTABLE status. If the patient is added successfully,
+	 *         returns HTTP CREATED status.
+	 */
+	private ResponseEntity&lt;String&gt; addPatientInternal(PatientDto patientDto, BindingResult result) {
+
+<span class="fc bfc" id="L147" title="All 2 branches covered.">	    if (result.hasErrors()) {</span>
+<span class="fc" id="L148">	        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(result.getAllErrors().toString());</span>
+	    } else {
+<span class="fc" id="L150">	        patientService.addPatient(patientDto);</span>
+<span class="fc" id="L151">	        return ResponseEntity.status(HttpStatus.CREATED).body(&quot;Patient has been added in the data base.&quot;);</span>
+	    }
+	}
+
+	/**
+	 * Updates an existing patient in the database.
+	 *
+	 * @param patientId  the ID of the patient to update.
+	 * @param patientDto a PatientDto object containing the updated patient's
+	 *                   information.
+	 * @param result     the BindingResult object that holds the validation result
+	 *                   of the request body.
+	 * 
+	 * @return a ResponseEntity with HTTP status and a message indicating the result
+	 *         of the operation. If the request body has validation errors, returns
+	 *         HTTP NOT_ACCEPTABLE status. If the patient is updated successfully,
+	 *         returns HTTP OK status. If the patient is not found, returns HTTP
+	 *         NOT_FOUND status.
+	 */
+	@PutMapping(&quot;/patient/update/{id}&quot;)
+	public ResponseEntity&lt;String&gt; updatePatient(@PathVariable(&quot;id&quot;) int patientId,
+			@Valid @RequestBody PatientDto patientDto, BindingResult result) {
+<span class="fc" id="L173">		logger.info(&quot;PUT request - updatePatient &quot; + patientId);</span>
+
+<span class="fc bfc" id="L175" title="All 2 branches covered.">		if (result.hasErrors()) {</span>
+<span class="fc" id="L176">			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(result.getAllErrors().toString());</span>
+		} else {
+			try {
+<span class="fc" id="L179">				patientService.updatePatient(patientId, patientDto);</span>
+<span class="fc" id="L180">			} catch (PatientNotFoundException ex) {</span>
+<span class="fc" id="L181">				return ResponseEntity.status(HttpStatus.NOT_FOUND)</span>
+<span class="fc" id="L182">						.body(&quot;Patient with id: &quot; + patientId + &quot;, not found in data base !&quot;);</span>
+<span class="fc" id="L183">			}</span>
+<span class="fc" id="L184">			return ResponseEntity.status(HttpStatus.OK).body(&quot;Patient has been updated in data base.&quot;);</span>
+		}
+	}
+
+	/**
+	 * Deletes a patient from the database.
+	 *
+	 * @param patientId the ID of the patient to delete.
+	 * 
+	 * @return a ResponseEntity with HTTP status and a message indicating the result
+	 *         of the operation. If the patient is deleted successfully, returns
+	 *         HTTP OK status. If the patient is not found, returns HTTP NOT_FOUND
+	 *         status.
+	 */
+	@DeleteMapping(&quot;/patient/delete/{id}&quot;)
+	public ResponseEntity&lt;String&gt; deletePatient(@PathVariable(&quot;id&quot;) int patientId) {
+<span class="fc" id="L200">		logger.info(&quot;DELETE request - deletePatient &quot; + patientId);</span>
+
+		try {
+<span class="fc" id="L203">			patientService.deletePatient(patientId);</span>
+<span class="fc" id="L204">		} catch (PatientNotFoundException ex) {</span>
+<span class="fc" id="L205">			return ResponseEntity.status(HttpStatus.NOT_FOUND)</span>
+<span class="fc" id="L206">					.body(&quot;Patient with id: &quot; + patientId + &quot;, not found in data base !&quot;);</span>
+<span class="fc" id="L207">		}</span>
+<span class="fc" id="L208">		return ResponseEntity.status(HttpStatus.OK).body(&quot;Patient has been deleted from data base.&quot;);</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

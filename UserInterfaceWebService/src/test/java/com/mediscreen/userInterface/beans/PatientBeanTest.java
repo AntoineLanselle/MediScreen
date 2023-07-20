@@ -25,8 +25,8 @@ public class PatientBeanTest {
 	        PatientBean patientBean = new PatientBean();
 	        patientBean.setFamily("Smith");
 	        patientBean.setGiven("John");
-	        patientBean.setDob("1990-01-01");
-	        patientBean.setSex("H");
+	        patientBean.setDob("1952-02-21");
+	        patientBean.setSex("M");
 	        patientBean.setAddress("123 Main St");
 	        patientBean.setPhone("555-789-1234");
 

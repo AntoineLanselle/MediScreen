@@ -34,7 +34,7 @@ public interface PatientApiServiceProxy {
 	public PatientBean getPatient(@PathVariable("id") int patientId);
 
 	@PostMapping("/patient/add")
-	public String addPatient(@RequestBody PatientBean patientDto);
+	public String addPatientJson(@RequestBody PatientBean patientDto);
 
 	@PutMapping("/patient/update/{id}")
 	public String updatePatient(@PathVariable("id") int patientId, @RequestBody PatientBean patientBean);

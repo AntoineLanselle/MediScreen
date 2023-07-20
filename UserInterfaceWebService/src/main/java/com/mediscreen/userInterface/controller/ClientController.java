@@ -107,7 +107,7 @@ public class ClientController {
 		if (result.hasErrors()) {
 			return "PatientAdd";
 		} else {
-			patientProxy.addPatient(patientBean);
+			patientProxy.addPatientJson(patientBean);
 			return "redirect:/patient?addSuccess";
 		}
 	}

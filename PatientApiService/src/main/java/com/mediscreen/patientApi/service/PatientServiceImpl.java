@@ -53,7 +53,6 @@ public class PatientServiceImpl implements PatientService {
 	 */
 	@Override
 	public List<PatientDto> searchPatients(String firstname, String lastname) {
-		logger.info("Searching patients in data base with firstname: " + firstname + " and lastname " + lastname);
 
 		List<Patient> patients;
 		if (firstname != null && lastname != null) {

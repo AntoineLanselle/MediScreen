@@ -2,6 +2,9 @@ package com.mediscreen.userInterface.beans;
 
 import java.time.LocalDate;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 
@@ -14,15 +17,20 @@ public class PatientBean {
 
 	private int id;
 
+	@NotNull
 	@Pattern(regexp = "^[a-zA-Z]{2,20}$", message = "Lastname must be more than 2 and less than 21 letters.")
 	private String family;
 
+	@NotNull
 	@Pattern(regexp = "^[a-zA-Z]{2,20}$", message = "Firstname must be more than 2 and less than 21 letters.")
 	private String given;
 
+	@NotNull
 	@Past(message = "Date Of Birth is not valid.")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dob;
 
+	@NotNull
 	@Pattern(regexp = "^[F|M]{1}$", message = "Gender must be M or F.")
 	private String sex;
 

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Patient.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PatientApiService</a> &gt; <a href="index.source.html" class="el_package">com.mediscreen.patientApi.domain</a> &gt; <span class="el_source">Patient.java</span></div><h1>Patient.java</h1><pre class="source lang-java linenums">package com.mediscreen.patientApi.domain;
+
+import java.time.LocalDate;
+
+import com.mediscreen.patientApi.dto.PatientDto;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+/**
+ * Represents a Patient entity in the system. Stores information about a
+ * patient.
+ *
+ * @author Antoine Lanselle
+ */
+@Entity
+@Table(name = &quot;Patient&quot;)
+public class Patient {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = &quot;id&quot;)
+	private int id;
+
+	@Column(name = &quot;lastname&quot;)
+	private String lastname;
+
+	@Column(name = &quot;firstname&quot;)
+	private String firstname;
+
+	@Column(name = &quot;date_of_birth&quot;)
+	private LocalDate dateOfBirth;
+
+	@Column(name = &quot;gender&quot;)
+	private String gender;
+
+	@Column(name = &quot;address&quot;)
+	private String address;
+
+	@Column(name = &quot;phone&quot;)
+	private String phone;
+
+<span class="fc" id="L47">	public Patient() {</span>
+
+<span class="fc" id="L49">	}</span>
+
+<span class="fc" id="L51">	public Patient(PatientDto patientDto) {</span>
+<span class="fc" id="L52">		this.firstname = patientDto.getGiven();</span>
+<span class="fc" id="L53">		this.lastname = patientDto.getFamily();</span>
+<span class="fc" id="L54">		this.dateOfBirth = patientDto.getDob();</span>
+<span class="fc" id="L55">		this.gender = patientDto.getSex();</span>
+<span class="fc" id="L56">		this.address = patientDto.getAddress();</span>
+<span class="fc" id="L57">		this.phone = patientDto.getPhone();</span>
+<span class="fc" id="L58">	}</span>
+
+	public int getId() {
+<span class="fc" id="L61">		return id;</span>
+	}
+
+	public void setId(int id) {
+<span class="nc" id="L65">		this.id = id;</span>
+<span class="nc" id="L66">	}</span>
+
+	public String getFirstname() {
+<span class="fc" id="L69">		return firstname;</span>
+	}
+
+	public void setFirstname(String firstname) {
+<span class="fc" id="L73">		this.firstname = firstname;</span>
+<span class="fc" id="L74">	}</span>
+
+	public String getLastname() {
+<span class="fc" id="L77">		return lastname;</span>
+	}
+
+	public void setLastname(String lastname) {
+<span class="fc" id="L81">		this.lastname = lastname;</span>
+<span class="fc" id="L82">	}</span>
+
+	public LocalDate getDateOfBirth() {
+<span class="fc" id="L85">		return dateOfBirth;</span>
+	}
+
+	public void setDateOfBirth(LocalDate dateOfBirth) {
+<span class="fc" id="L89">		this.dateOfBirth = dateOfBirth;</span>
+<span class="fc" id="L90">	}</span>
+
+	public String getGender() {
+<span class="fc" id="L93">		return gender;</span>
+	}
+
+	public void setGender(String gender) {
+<span class="fc" id="L97">		this.gender = gender;</span>
+<span class="fc" id="L98">	}</span>
+
+	public String getAddress() {
+<span class="fc" id="L101">		return address;</span>
+	}
+
+	public void setAddress(String address) {
+<span class="fc" id="L105">		this.address = address;</span>
+<span class="fc" id="L106">	}</span>
+
+	public String getPhone() {
+<span class="fc" id="L109">		return phone;</span>
+	}
+
+	public void setPhone(String phone) {
+<span class="fc" id="L113">		this.phone = phone;</span>
+<span class="fc" id="L114">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
