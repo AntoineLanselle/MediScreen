@@ -13,15 +13,13 @@ To run the PatientApiService application, follow these steps:
 
 3. Run this command in your SGBD to run the sql script:
 ```
-	source path/to/application/MediScreen/PatientApiService/src/main/resources/scripts/data_base_structure.sql
+	source path/to/application/MediScreen/PatientDatabase/data_base_structure.sql
 ```
-4. Build the application using Maven or your preferred build tool.
+4. Build the application using Maven or your preferred IDE.
 
 5. Run the application using the main class PatientApiApplication.java.
 
 6. The application will start running on http://localhost:8081.
-
-7. If you want to add patients to your database you can simply double-click on the script add_patient.sh.
 
 ## API Endpoints
 

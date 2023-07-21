@@ -12,7 +12,7 @@ To run the UserInterface application, follow these steps:
 
 2.Start the Patient API service on localhost:8081.
 
-3.Build and run the UserInterface application using your preferred IDE or by running the UserInterfaceWebServiceApplication class.
+3.Build the application using Maven or your preferred IDE.
 
 4.Access the application in your web browser at localhost:8080/patient.
 

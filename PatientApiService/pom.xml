@@ -12,7 +12,7 @@
 	</parent>
 
 	<groupId>com.mediscreen</groupId>
-	<artifactId>patientApi</artifactId>
+	<artifactId>PatientApiService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>PatientApiService</name>
 	<description>PatientApiService for Mediscreen application.</description>

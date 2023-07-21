@@ -20,7 +20,7 @@ import com.mediscreen.userInterface.beans.PatientBean;
  * 
  * @author Antoine Lanselle
  */
-@FeignClient(name = "PatientApiService", url = "localhost:8081")
+@FeignClient(name = "PatientApiService", url = "${patient.api.url}")
 public interface PatientApiServiceProxy {
 
 	@GetMapping("/patient")
