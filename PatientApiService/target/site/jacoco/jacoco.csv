@@ -1,0 +1,7 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+PatientApiService,com.mediscreen.patientApi.exception,PatientNotFoundException,0,4,0,0,0,2,0,1,0,1
+PatientApiService,com.mediscreen.patientApi.service,PatientServiceImpl,12,188,1,13,3,47,1,13,0,7
+PatientApiService,com.mediscreen.patientApi.controller,PatientApiController,13,140,0,4,2,33,1,10,1,8
+PatientApiService,com.mediscreen.patientApi.domain,Patient,4,75,0,0,2,29,1,15,1,15
+PatientApiService,com.mediscreen.patientApi,PatientApiApplication,8,0,0,0,3,0,2,0,2,0
+PatientApiService,com.mediscreen.patientApi.dto,PatientDto,19,69,0,0,9,25,5,12,5,12

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PatientNotFoundException.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PatientApiService</a> &gt; <a href="index.source.html" class="el_package">com.mediscreen.patientApi.exception</a> &gt; <span class="el_source">PatientNotFoundException.java</span></div><h1>PatientNotFoundException.java</h1><pre class="source lang-java linenums">package com.mediscreen.patientApi.exception;
+
+/**
+ * Exception thrown when a patient is not found. This exception is typically
+ * thrown when attempting to retrieve a patient by ID and no patient with the
+ * specified ID is found in the database.
+ * 
+ * @author Antoine Lanselle
+ */
+public class PatientNotFoundException extends RuntimeException {
+
+	private static final long serialVersionUID = 2L;
+
+	/**
+	 * Constructs a PatientNotFoundException with the specified message.
+	 *
+	 * @param message the message explaining the exception.
+	 */
+	public PatientNotFoundException(String message) {
+<span class="fc" id="L20">		super(message);</span>
+<span class="fc" id="L21">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
