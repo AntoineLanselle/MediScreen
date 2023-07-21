@@ -2,44 +2,52 @@ package com.mediscreen.patientApi.dto;
 
 import java.time.LocalDate;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.mediscreen.patientApi.domain.Patient;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Pattern;
 
 /**
- * PatientDTO	.
- *
+ * Data Transfer Object (DTO) for representing a Patient. Contains patient
+ * information used for communication between different layers of the
+ * application.
+ * 
  * @author Antoine Lanselle
  */
 public class PatientDto {
-	
+
 	private int id;
 
-	@Size(min = 2, max = 20)
-	@NotNull(message="Enter a Lastname.")
+	@NotNull
+	@Pattern(regexp = "^[a-zA-Z]{2,20}$", message = "Lastname must be less than 21 letters.")
 	private String family;
-	
-	@Size(min = 2, max = 20)
-	@NotNull(message="Enter a Firstname.")
+
+	@NotNull
+	@Pattern(regexp = "^[a-zA-Z]{2,20}$", message = "Firstname must be less than 21 letters.")
 	private String given;
-	
-	@Past
+
 	@NotNull
+	@Past(message = "Date Of Birth is not valid.")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dob;
-	
+
 	@NotNull
+	@Pattern(regexp = "^[F|M]{1}$", message = "Gender must be M or F.")
 	private String sex;
-	
+
+	@Pattern(regexp = "^([\\w\\s]{2,255}|)$", message = "Address must be alphanumeric characters.")
 	private String address;
-	
+
+	@Pattern(regexp = "^((\\d{3}\\-){2}\\d{4}|)$", message = "Phone number must be xxx-xxx-xxxx.")
 	private String phone;
-	
+
 	public PatientDto() {
-		
+
 	}
-	
+
 	public PatientDto(Patient patient) {
 		this.id = patient.getId();
 		this.family = patient.getLastname();
@@ -49,7 +57,7 @@ public class PatientDto {
 		this.address = patient.getAddress();
 		this.phone = patient.getPhone();
 	}
-	
+
 	public int getid() {
 		return id;
 	}
@@ -57,7 +65,7 @@ public class PatientDto {
 	public void setid(int id) {
 		this.id = id;
 	}
-	
+
 	public String getFamily() {
 		return family;
 	}
@@ -80,6 +88,10 @@ public class PatientDto {
 
 	public void setDob(LocalDate dob) {
 		this.dob = dob;
+	}
+
+	public void setDob(String dob) {
+		this.dob = LocalDate.parse(dob);
 	}
 
 	public String getSex() {

@@ -1,0 +1,43 @@
+version: '3.8'
+services:
+
+    patient-database:
+        image: mysql:5.7
+        container_name: patient-database
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: patientDatabase
+        volumes:
+            - db_data:/var/lib/mysql
+        ports: 
+            - 3307:3306
+
+    patient-api:
+        image: patient-api:latest
+        container_name: patient-api
+        environment:
+            SPRING_DATASOURCE_URL: jdbc:mysql://patient-database:3306/patientDatabase
+        build:
+            context: PatientApiService
+            dockerfile: Dockerfile
+        depends_on:
+            - patient-database
+        restart: on-failure
+        ports: 
+            - 8081:8081
+            
+    user-interface:
+        image: user-interface:latest
+        container_name: user-interface
+        build:
+            context: UserInterfaceWebService
+            dockerfile: Dockerfile
+        depends_on:
+            - patient-database
+            - patient-api
+        restart: on-failure
+        ports: 
+            - 8080:8080
+    
+volumes:
+    db_data: {}
