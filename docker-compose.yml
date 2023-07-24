@@ -26,6 +26,15 @@ services:
         ports: 
             - 8081:8081
             
+    notes-patient:
+        image: notes-patient:latest
+        container_name: notes-patient
+        build:
+            context: NotesPatientService
+            dockerfile: Dockerfile
+        ports: 
+            - 8082:8082
+            
     user-interface:
         image: user-interface:latest
         container_name: user-interface

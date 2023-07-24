@@ -28,7 +28,7 @@ public class ClientControllerTest {
 	private PatientApiServiceProxy patientProxy;
 
 	@InjectMocks
-	private ClientController clientController;
+	private InterfaceController clientController;
 
 	@Mock
 	Model model;

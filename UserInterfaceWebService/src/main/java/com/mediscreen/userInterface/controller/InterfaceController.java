@@ -25,13 +25,13 @@ import jakarta.validation.Valid;
  * @author Antoine Lanselle
  */
 @Controller
-public class ClientController {
+public class InterfaceController {
 
 	private final PatientApiServiceProxy patientProxy;
 
-	private Logger logger = LoggerFactory.getLogger(ClientController.class);
+	private Logger logger = LoggerFactory.getLogger(InterfaceController.class);
 
-	public ClientController(PatientApiServiceProxy patientProxy) {
+	public InterfaceController(PatientApiServiceProxy patientProxy) {
 		this.patientProxy = patientProxy;
 	}
 

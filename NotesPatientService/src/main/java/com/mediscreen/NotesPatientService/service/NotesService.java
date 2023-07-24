@@ -1,0 +1,19 @@
+package com.mediscreen.NotesPatientService.service;
+
+import java.util.List;
+
+import com.mediscreen.NotesPatientService.dto.NotesDto;
+
+public interface NotesService {
+
+	public NotesDto getNotesById(int notesId);
+	
+	public List<NotesDto> findByPatientId(int patientId);
+	
+	public void createNotes(NotesDto notesDto);
+	
+	public void updateNotes(int notesId, NotesDto updateNotes);
+	
+	public void deleteNotes(int notesId);
+	
+}
