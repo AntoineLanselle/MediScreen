@@ -20,6 +20,12 @@ import com.mediscreen.NotesPatientService.dto.NotesDto;
 import com.mediscreen.NotesPatientService.exception.NotesNotFoundException;
 import com.mediscreen.NotesPatientService.repository.NotesRepository;
 
+/**
+ * Implementation of the NotesService interface. This class provides the actual
+ * implementation for managing notes.
+ * 
+ * @author Antoine Lanselle
+ */
 @Service
 public class NotesServiceImpl implements NotesService {
 
@@ -31,6 +37,15 @@ public class NotesServiceImpl implements NotesService {
 	@Autowired
 	private MongoOperations mongoOperations;
 
+	/**
+	 * Retrieves a specific NotesDto by its notesId.
+	 *
+	 * @param notesId The unique identifier of the notes to retrieve.
+	 * 
+	 * @return The NotesDto representing the notes with the specified notesId.
+	 * @throws NotesNotFoundException if the notes with the specified notesId is not
+	 *                                found in the database.
+	 */
 	public NotesDto getNotesById(int notesId) {
 		logger.info("Trying to find notes by id in data base.");
 
@@ -45,13 +60,27 @@ public class NotesServiceImpl implements NotesService {
 		}
 	}
 
+	/**
+	 * Retrieves a list of NotesDto associated with a specific patient ID, ordered
+	 * by date of the notes in descending order.
+	 *
+	 * @param patientId The ID of the patient for whom to retrieve the notes.
+	 * 
+	 * @return A list of NotesDto associated with the given patient ID, ordered by
+	 *         date of the notes in descending order.
+	 */
 	public List<NotesDto> findByPatientId(int patientId) {
 		logger.info("Getting all notes of patient " + patientId + " in data base.");
-		List<Notes> notesList = notesRepository.findByPatientId(patientId);
+		List<Notes> notesList = notesRepository.findByPatientIdOrderByDateTimeNoteDesc(patientId);
 		List<NotesDto> notesDtos = notesList.stream().map(NotesDto::new).collect(Collectors.toList());
 		return notesDtos;
 	}
 
+	/**
+	 * Creates and adds a new notes entry in the database.
+	 *
+	 * @param notesDto The NotesDto representing the notes to be created.
+	 */
 	public void createNotes(NotesDto notesDto) {
 		logger.info("Adding notes in data base.");
 		notesDto.setDateTimeNote(LocalDateTime.now());
@@ -62,6 +91,15 @@ public class NotesServiceImpl implements NotesService {
 		notesRepository.save(notes);
 	}
 
+	/**
+	 * Updates an existing notes entry in the database.
+	 *
+	 * @param notesId     The identifier of the notes to be updated.
+	 * @param updateNotes The NotesDto containing the updated notes data.
+	 * 
+	 * @throws NotesNotFoundException if the notes with the specified notesId is not
+	 *                                found in the database.
+	 */
 	public void updateNotes(int notesId, NotesDto updateNotes) {
 		logger.info("Trying to update notes in data base.");
 
@@ -78,6 +116,14 @@ public class NotesServiceImpl implements NotesService {
 		}
 	}
 
+	/**
+	 * Deletes an existing notes entry from the database.
+	 *
+	 * @param notesId The identifier of the notes to be deleted.
+	 * 
+	 * @throws NotesNotFoundException if the notes with the specified notesId is not
+	 *                                found in the database.
+	 */
 	public void deleteNotes(int notesId) {
 		logger.info("Trying to delete patient in data base.");
 
@@ -92,6 +138,12 @@ public class NotesServiceImpl implements NotesService {
 		}
 	}
 
+	/**
+	 * Retrieves the next sequence ID for creating a new notes entry in the
+	 * database.
+	 *
+	 * @return The next available sequence ID for notes.
+	 */
 	private int getNextSequenceId() {
 		Query query = new Query(Criteria.where("_id").is("notes_sequence"));
 		Update update = new Update().inc("seq", 1);

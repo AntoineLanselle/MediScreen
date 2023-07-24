@@ -8,20 +8,25 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.mediscreen.NotesPatientService.dto.NotesDto;
 
+/**
+ * Represents a Notes entity in the system. Stores information about a notes.
+ *
+ * @author Antoine Lanselle
+ */
 @Document(collection = "notes")
 public class Notes {
 
 	@Id
 	private int notesId;
-	
+
 	@Field(value = "patientId")
-    private int patientId;
-	
+	private int patientId;
+
 	@Field("dateTime")
 	private LocalDateTime dateTimeNote;
-	
-    @Field(value = "notes")
-    private String notes;
+
+	@Field(value = "notes")
+	private String notes;
 
 	public Notes() {
 	}
@@ -69,5 +74,5 @@ public class Notes {
 	public void setNotes(String notes) {
 		this.notes = notes;
 	}
-	  
+
 }

@@ -4,6 +4,11 @@ import java.util.List;
 
 import com.mediscreen.NotesPatientService.dto.NotesDto;
 
+/**
+ * Service interface for managing notes.
+ * 
+ * @author Antoine Lanselle
+ */
 public interface NotesService {
 
 	public NotesDto getNotesById(int notesId);

@@ -3,13 +3,19 @@ package com.mediscreen.NotesPatientService.domain;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * Represents a SequenceCounter entity in the system. Stores the counter of
+ * notes's id.
+ *
+ * @author Antoine Lanselle
+ */
 @Document(collection = "notes_sequence")
 public class SequenceCounter {
-  
+
 	@Id
 	private String id;
-	
-    private int seq;
+
+	private int seq;
 
 	public String getId() {
 		return id;
@@ -18,7 +24,7 @@ public class SequenceCounter {
 	public void setId(String id) {
 		this.id = id;
 	}
-    
+
 	public int getSeq() {
 		return seq;
 	}
@@ -26,5 +32,5 @@ public class SequenceCounter {
 	public void setSeq(int seq) {
 		this.seq = seq;
 	}
-    
+
 }

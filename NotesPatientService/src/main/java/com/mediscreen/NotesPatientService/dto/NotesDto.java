@@ -4,6 +4,13 @@ import java.time.LocalDateTime;
 
 import com.mediscreen.NotesPatientService.domain.Notes;
 
+/**
+ * Data Transfer Object (DTO) for representing a Notes. Contains notes
+ * information used for communication between different layers of the
+ * application.
+ * 
+ * @author Antoine Lanselle
+ */
 public class NotesDto {
 
 	private int notesId;
