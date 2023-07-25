@@ -111,7 +111,6 @@ public class NotesServiceImpl implements NotesService {
 		} else {
 			logger.info("Updating notes in data base.");
 			notes.setNotes(updateNotes.getE());
-			deleteNotes(notesId);
 			notesRepository.save(notes);
 		}
 	}
