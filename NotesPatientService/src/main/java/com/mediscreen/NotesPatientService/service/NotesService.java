@@ -17,7 +17,7 @@ public interface NotesService {
 	
 	public void createNotes(NotesDto notesDto);
 	
-	public void updateNotes(int notesId, NotesDto updateNotes);
+	public void updateNotes(NotesDto updateNotes);
 	
 	public void deleteNotes(int notesId);
 	

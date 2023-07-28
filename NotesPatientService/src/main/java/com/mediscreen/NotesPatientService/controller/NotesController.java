@@ -128,15 +128,15 @@ public class NotesController {
 	 *         of the operation. If the notes is updated successfully, returns HTTP
 	 *         OK status. If the notes is not found, returns HTTP NOT_FOUND status.
 	 */
-	@PutMapping("/patHistory/update/{notesId}")
-	public ResponseEntity<String> updateNotes(@PathVariable("notesId") int notesId, @RequestBody NotesDto notesDto) {
-		logger.info("PUT request - updateNotes " + notesId);
+	@PutMapping("/patHistory/update")
+	public ResponseEntity<String> updateNotes(@RequestBody NotesDto notesDto) {
+		logger.info("PUT request - updateNotes " + notesDto.getNotesId());
 
 		try {
-			notesService.updateNotes(notesId, notesDto);
+			notesService.updateNotes(notesDto);
 		} catch (NotesNotFoundException ex) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body("Notes with id: " + notesId + ", not found in data base !");
+					.body("Notes with id: " + notesDto.getNotesId() + ", not found in data base !");
 		}
 		return ResponseEntity.status(HttpStatus.OK).body("Notes has been updated in data base.");
 	}

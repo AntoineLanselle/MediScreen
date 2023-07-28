@@ -81,6 +81,7 @@ class NotesServiceImplTest {
 		// GIVEN
 		int notesId = 1;
 		NotesDto updateNotes = new NotesDto();
+		updateNotes.setNotesId(notesId);
 		updateNotes.setE("Updated notes");
 		Notes existingNotes = new Notes();
 		existingNotes.setNotes("Original notes");
@@ -92,7 +93,7 @@ class NotesServiceImplTest {
 		});
 
 		// WHEN
-		notesService.updateNotes(notesId, updateNotes);
+		notesService.updateNotes(updateNotes);
 
 		// THEN
 		assertEquals(updateNotes.getE(), existingNotes.getNotes());
@@ -105,10 +106,11 @@ class NotesServiceImplTest {
 		// GIVEN
 		int nonExistingId = 999;
 		NotesDto updateNotes = new NotesDto();
+		updateNotes.setNotesId(nonExistingId);
 		when(notesRepository.findByNotesId(nonExistingId)).thenReturn(null);
 
 		// WHEN & THEN
-		assertThrows(NotesNotFoundException.class, () -> notesService.updateNotes(nonExistingId, updateNotes));
+		assertThrows(NotesNotFoundException.class, () -> notesService.updateNotes(updateNotes));
 	}
 
 	@Test

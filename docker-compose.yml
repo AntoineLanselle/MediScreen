@@ -12,6 +12,15 @@ services:
         ports: 
             - 3307:3306
 
+
+    notes-database:
+        image: mongo:4
+        container_name: notes-database
+        ports:
+            - 27017:27017
+        volumes:
+            - mongodb_data_container:/data/db
+      
     patient-api:
         image: patient-api:latest
         container_name: patient-api
@@ -29,10 +38,15 @@ services:
     notes-patient:
         image: notes-patient:latest
         container_name: notes-patient
+        environment:
+            - spring_data_mongodb_host=notes-database
         build:
             context: NotesPatientService
             dockerfile: Dockerfile
-        ports: 
+        depends_on:
+            - notes-database
+        restart: on-failure
+        ports:
             - 8082:8082
             
     user-interface:
@@ -42,11 +56,12 @@ services:
             context: UserInterfaceWebService
             dockerfile: Dockerfile
         depends_on:
-            - patient-database
             - patient-api
+            - notes-patient
         restart: on-failure
         ports: 
             - 8080:8080
     
 volumes:
     db_data: {}
+    mongodb_data_container: {}

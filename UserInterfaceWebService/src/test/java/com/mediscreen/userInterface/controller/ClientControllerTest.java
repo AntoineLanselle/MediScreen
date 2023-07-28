@@ -19,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
 import com.mediscreen.userInterface.beans.PatientBean;
+import com.mediscreen.userInterface.proxies.NotesPatientServiceProxy;
 import com.mediscreen.userInterface.proxies.PatientApiServiceProxy;
 
 @ExtendWith(MockitoExtension.class)
@@ -26,6 +27,9 @@ public class ClientControllerTest {
 
 	@Mock
 	private PatientApiServiceProxy patientProxy;
+	
+	@Mock
+	private NotesPatientServiceProxy notesProxy;
 
 	@InjectMocks
 	private InterfaceController clientController;

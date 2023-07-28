@@ -114,15 +114,16 @@ class NotesControllerTest {
 		// GIVEN
 		int notesId = 1;
 		NotesDto notesDto = new NotesDto();
+		notesDto.setNotesId(notesId);
 
 		// WHEN
-		ResponseEntity<String> response = notesController.updateNotes(notesId, notesDto);
+		ResponseEntity<String> response = notesController.updateNotes(notesDto);
 
 		// THEN
 		assertNotNull(response);
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		assertEquals("Notes has been updated in data base.", response.getBody());
-		verify(notesService).updateNotes(notesId, notesDto);
+		verify(notesService).updateNotes(notesDto);
 	}
 
 	@Test
@@ -130,10 +131,11 @@ class NotesControllerTest {
 		// GIVEN
 		int nonExistingId = 999;
 		NotesDto notesDto = new NotesDto();
-		doThrow(NotesNotFoundException.class).when(notesService).updateNotes(nonExistingId, notesDto);
+		notesDto.setNotesId(nonExistingId);
+		doThrow(NotesNotFoundException.class).when(notesService).updateNotes(notesDto);
 
 		// WHEN
-		ResponseEntity<String> response = notesController.updateNotes(nonExistingId, notesDto);
+		ResponseEntity<String> response = notesController.updateNotes(notesDto);
 
 		// THEN
 		assertNotNull(response);

@@ -1,4 +1,5 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+UserInterfaceWebService,com.mediscreen.userInterface.beans,NotesPatientBean,31,0,0,0,14,0,9,0,9,0
 UserInterfaceWebService,com.mediscreen.userInterface.beans,PatientBean,23,34,0,0,9,16,7,9,7,9
-UserInterfaceWebService,com.mediscreen.userInterface.controller,ClientController,0,117,1,7,0,31,1,10,0,7
+UserInterfaceWebService,com.mediscreen.userInterface.controller,InterfaceController,87,128,1,7,21,33,6,10,5,7
 UserInterfaceWebService,com.mediscreen.userInterface,UserInterfaceWebServiceApplication,8,0,0,0,3,0,2,0,2,0

@@ -86,6 +86,35 @@
 
 		</form>
 		
+		<div>
+		
+			<form method="GET" th:action="@{/patient/{id}/notes/add(id=${patientBean.id})}">
+				<button name="addNotes" type="submit" formmethod="GET">Add new notes</button>
+			</form>
+						
+			<div th:each="notes: ${notesPatient}">
+			
+				<ul>
+					<li th:text="${notes.notesId}"></li>
+					<li th:text="${notes.patId}"></li>
+					<li th:text="${notes.dateTimeNote}"></li>
+					<li th:text="${notes.e}"></li>
+					<li>
+						<form method="GET" th:action="@{/patient/notes/{id}(id=${notes.notesId})}">
+							<button name="updateNotes" type="submit" formmethod="GET">Update</button>
+						</form>
+					</li>
+					<li>
+						<form method="POST" th:action="@{/patient/{patId}/notes/delete/{notesId}(notesId=${notes.notesId}, patId=${patientBean.id})}">
+							<button name="deleteNotes" type="submit" formmethod="POST">Delete</button>
+						</form>
+					</li>
+				</ul>
+
+			</div>
+		
+		</div>
+		
 	</div>
 	
 </body>

@@ -100,12 +100,12 @@ public class NotesServiceImpl implements NotesService {
 	 * @throws NotesNotFoundException if the notes with the specified notesId is not
 	 *                                found in the database.
 	 */
-	public void updateNotes(int notesId, NotesDto updateNotes) {
+	public void updateNotes(NotesDto updateNotes) {
 		logger.info("Trying to update notes in data base.");
 
-		Notes notes = notesRepository.findByNotesId(notesId);
+		Notes notes = notesRepository.findByNotesId(updateNotes.getNotesId());
 		if (notes == null) {
-			String error = "Notes: " + notesId + " not found in data base !";
+			String error = "Notes: " + updateNotes.getNotesId() + " not found in data base !";
 			logger.error(error);
 			throw new NotesNotFoundException(error);
 		} else {
