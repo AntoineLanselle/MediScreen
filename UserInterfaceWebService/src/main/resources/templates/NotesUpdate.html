@@ -9,11 +9,16 @@
 
 	<div class="container">
 	
-		<h1>Application MediScreen</h1>
-		
-		<form method="GET" action="/patient" >
-  			<button type="submit" formmethod="GET"> &lt;- Back to patients details</button>
-  		</form>
+		<div class="logo">
+			<img src="/images/MediScreenLogo.png">
+			<h1>MediScreen</h1>
+		</div>
+  		
+  		<div class="patientTableActions">
+	  		<form method="GET" th:action="@{/patient/{patId}(patId=${notesPatientBean.patId})}" >
+	  			<button type="submit"> &lt;- Back to patients details</button>
+	  		</form>
+  		</div>
 
 		<form th:action="@{/patient/notes/update}" th:object="${notesPatientBean}" method="POST" >
 
@@ -23,10 +28,7 @@
 			<!-- Include the notesId as a hidden input field -->
     		<input type="hidden" name="notesId" th:value="${notesPatientBean.notesId}" />
 
-			<div class="input">
-				<label for="notes">Notes</label> 
-				<textarea class="sec-2" name="notes" placeholder="Text here..." th:value="${notesPatientBean.e}" th:field="*{e}"></textarea>
-			</div>
+			<textarea name="notes" placeholder="Text here..." th:value="${notesPatientBean.e}" th:field="*{e}"></textarea>
 
 			<button name="notesPatientBean" type="submit" formmethod="POST">Update Notes</button>
 
