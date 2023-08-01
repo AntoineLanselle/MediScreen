@@ -146,10 +146,25 @@ tbody tr:hover {
 	color: #fff;
 }
 
+/*
 details {
   margin: 30px;
   background-color: #d7edff;
   border-radius: 4px;
+}*/
+
+details {
+	&[open] {
+		box-shadow: -3px 0 0 #5cb85c;
+	}
+	
+	&:first-of-type {
+		border-top: 1px solid black;
+	}
+	& > div {
+		padding: 2em 2em 0;
+		font-size: .875em;
+	}
 }
 
 details div.note-button {
@@ -160,7 +175,7 @@ details div.note-button {
 div.note-button form {
 	margin: 0px 10px 10px 0px;
 }
-
+/*
 details summary {
   border-radius: 4px;
   padding: 15px;
@@ -168,6 +183,24 @@ details summary {
   background-color: #afd7d7;
   font-size: 20px;
   cursor: pointer;
+}*/
+
+details summary  {
+  	list-style: none;
+	padding: 1em .5em;
+ 	color: black;
+ 	position: relative;
+  	background-color: #fff;
+ 	font-size: 20px;
+ 	cursor: pointer;
+ 	&::-webkit-details-marker {
+		display: none;
+	}
+	
+	&:hover {
+		background-color: #5cb85c;
+		color: white;
+	}
 }
 
 details pre {

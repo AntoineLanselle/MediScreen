@@ -167,7 +167,7 @@ public class InterfaceController {
 		logger.info("POST request - add notes for patient " + notesPatientBean.getPatId());
 
 		notesProxy.addNotesJson(notesPatientBean);
-		return "redirect:/patient/" + notesPatientBean.getPatId() + "?addSuccess";
+		return "redirect:/patient/" + notesPatientBean.getPatId() + "?notesAdd";
 	}
 
 	/**
@@ -182,10 +182,11 @@ public class InterfaceController {
 	 */
 	@PostMapping("/patient/{id}")
 	public String patientUpdate(@Valid @ModelAttribute("patientBean") PatientBean patientBean, BindingResult result,
-			@PathVariable("id") int id) {
+			@PathVariable("id") int id, Model model) {
 		logger.info("POST request - update patient " + id);
 
 		if (result.hasErrors()) {
+	        model.addAttribute("notesPatient", notesProxy.getAllPatientNotes(id));
 			return "PatientDetails";
 		} else {
 			patientProxy.updatePatient(id, patientBean);
@@ -207,7 +208,7 @@ public class InterfaceController {
 		logger.info("POST request - update notes " + notesPatientBean.getNotesId());
 
 		notesProxy.updateNotes(notesPatientBean);
-		return "redirect:/patient/" + notesPatientBean.getPatId() + "?success";
+		return "redirect:/patient/" + notesPatientBean.getPatId() + "?notesUpt";
 	}
 
 	/**
@@ -244,9 +245,9 @@ public class InterfaceController {
 
 		try {
 			notesProxy.deleteNotes(notesId);
-			return "redirect:/patient/" + patId + "?delSuccess";
+			return "redirect:/patient/" + patId + "?notesDel";
 		} catch (Exception ex) {
-			return "redirect:/patient/" + patId + "?delError";
+			return "redirect:/patient/" + patId + "?notesError";
 		}
 	}
 

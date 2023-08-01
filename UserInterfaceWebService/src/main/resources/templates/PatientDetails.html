@@ -67,6 +67,7 @@
 			
 						<div class="input-group">
 							<div class="input-wrapper">
+								<label>Gender*</label>
 								<input id="sexChoice1" name="sex" type="radio" value="F" th:field="*{sex}" required />
 								<label for="sexChoice1">Female</label> 
 								<input id="sexChoice2" name="sex" type="radio" value="M" th:field="*{sex}" required /> 
@@ -110,10 +111,27 @@
 		</form>
 		
 		<div>
-		
-			<form method="GET" th:action="@{/patient/{id}/notes/add(id=${patientBean.id})}">
-				<button name="addNotes" type="submit" formmethod="GET">Add new notes</button>
-			</form>
+			<div class="patientTableActions">
+				<form method="GET" th:action="@{/patient/{id}/notes/add(id=${patientBean.id})}">
+					<button name="addNotes" type="submit" formmethod="GET">Add new notes</button>
+				</form>
+				
+				<div class="error" th:if="${param.notesAdd}">
+					<label>Notes has been added.</label>
+				</div>
+				
+				<div class="error" th:if="${param.notesUpt}">
+					<label>Notes has been modified.</label>
+				</div>
+				
+				<div class="error" th:if="${param.notesDel}">
+					<label>Notes has been deleted.</label>
+				</div>
+				
+				<div class="error" th:if="${param.notesError}">
+					<label>Notes could not be deleted.</label>
+				</div>
+			</div>
 						
 			<div th:each="notes: ${notesPatient}">
 			
