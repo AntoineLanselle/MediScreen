@@ -12,8 +12,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
+
 import com.mediscreen.NotesPatientService.domain.Notes;
+import com.mediscreen.NotesPatientService.domain.SequenceCounter;
 import com.mediscreen.NotesPatientService.dto.NotesDto;
 import com.mediscreen.NotesPatientService.exception.NotesNotFoundException;
 import com.mediscreen.NotesPatientService.repository.NotesRepository;
@@ -58,6 +63,29 @@ class NotesServiceImplTest {
 
 		// WHEN & THEN
 		assertThrows(NotesNotFoundException.class, () -> notesService.getNotesById(nonExistingId));
+	}
+
+	@Test
+	@SuppressWarnings("unchecked")
+	public void createNotes_ShouldSaveNotesInRepository() {
+		// GIVEN
+		int patientId = 123;
+		String notesContent = "Sample notes content";
+		NotesDto notesDto = new NotesDto(patientId, notesContent);
+
+		// Mock the sequence counter
+		SequenceCounter counter = new SequenceCounter();
+		counter.setId("notes_sequence");
+		counter.setSeq(1);
+		when(mongoOperations.findAndModify(any(Query.class), any(Update.class), any(FindAndModifyOptions.class),
+				any(Class.class))).thenReturn(counter);
+		when(notesRepository.save(any(Notes.class))).thenReturn(new Notes());
+
+		// WHEN
+		notesService.createNotes(notesDto);
+
+		// THEN
+		verify(notesRepository, times(1)).save(any(Notes.class));
 	}
 
 	@Test
