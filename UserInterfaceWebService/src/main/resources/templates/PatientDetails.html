@@ -9,82 +9,150 @@
 
 	<div class="container">
 	
-		<h1>Application MediScreen</h1>
+		<div class="logo">
+			<img src="/images/MediScreenLogo.png">
+			<h1>MediScreen</h1>
+		</div>
 		
-		<form method="GET" action="/patient" >
-  			<button type="submit" formmethod="GET"> &lt;- Back to patients list</button>
-  		</form>
-  		
-  		<form method="POST" th:action="@{/patient/delete/{id}(id=${patientBean.id})}">
-			<button name="deletePatient" type="submit" formmethod="POST">Delete</button>
-		</form>
-
-		<form method="POST" th:object="${patientBean}">
-
-			<div class="form-left">
+		<div class="patientTableActions">
+		
+			<form method="GET" action="/patient" >
+	  			<button type="submit" formmethod="GET"> &lt;- Back to patients list</button>
+	  		</form>
+	  		
+	  		<div class="error" th:if="${param.success}">
+				<label>Modifications successfully done!</label>
+			</div>
+	  		
+		  	<form method="POST" th:action="@{/patient/delete/{id}(id=${patientBean.id})}">
+				<button name="deletePatient" type="submit" formmethod="POST">Delete Patient</button>
+			</form>
 			
-				<div class="input">
-					<label for="given">Firstname*</label> 
-					<input class="sec-2" name="given" type="text" placeholder="Firstname" th:value="${patientBean.given}" th:field="*{given}" required />
-					<p class="error" th:if="${#fields.hasErrors('given')}" th:errors="*{given}"></p>
-				</div>
+  		</div>		
 
-				<div class="input">
-					<label for="family">Lastname*</label> 
-					<input class="sec-2" name="family" type="text" placeholder="Lastname" th:value="${patientBean.family}" th:field="*{family}"  required />
-					<p class="error" th:if="${#fields.hasErrors('family')}" th:errors="*{family}"></p>
-				</div>
-
-				<div class="input">
-					<label for="dob">Date Of Birth*</label> 
-					<input class="sec-2" name="dob" type="date" th:value="${#temporals.format(patientBean.dob, 'yyyy-MM-dd')}" th:field="*{dob}" required />
-					<p class="error" th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}"></p>
-				</div>
-	
-				<fieldset th:switch="${patientBean.sex}">
-					<legend>Gender*</legend>
-					<div th:case="F">
-						<input class="sec-2" id="sexChoice1" name="sex" type="radio" value="F" th:field="*{sex}" checked required />
-						<label for="sexChoice1">Female</label> 
-						<input class="sec-2" id="sexChoice2" name="sex" type="radio" value="M" th:field="*{sex}" required /> 
-						<label for="sexChoice2">Male</label> 
-					</div>
-					<div th:case="M">
-						<input class="sec-2" id="sexChoice1" name="sex" type="radio" value="F" th:field="*{sex}" required />
-						<label for="sexChoice1">Female</label> 
-						<input class="sec-2" id="sexChoice2" name="sex" type="radio" value="M" th:field="*{sex}" checked required /> 
-						<label for="sexChoice2">Male</label> 
-					</div>
-					<p class="error" th:if="${#fields.hasErrors('sex')}" th:errors="*{sex}"></p>
-				</fieldset>
+		<form class="patient-form" method="POST" th:object="${patientBean}">
+			<fieldset>
+			
+				<legend>Patient Details</legend>
 				
-			</div>
-			
-			<div class="form-right">
-			
-				<div class="input">
-					<label for="address">Address</label> 
-					<input class="sec-2" name="address" type="text" placeholder="Address" th:value="${patientBean.address}" th:field="*{address}"/>
-					<p class="error" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></p>
-				</div>
+				<div class="form-content">
+					<div class="form-left">
 	
-				<div class="input">
-					<label for="phone">Phone Number</label> 
-					<input class="sec-2" name="phone" type="text" placeholder="012-345-6789" th:value="${patientBean.phone}" th:field="*{phone}" />
-					<p class="error" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></p>
+						<div class="input-group">
+							<div class="input-wrapper">
+								<label for="given" class="input-label">Firstname*</label> 
+								<input class="input" name="given" type="text"  placeholder="Firstname" th:field="*{given}" required />
+							</div>
+							<p class="error" th:unless="${#fields.hasErrors('given')}"></p>
+							<p class="error" th:if="${#fields.hasErrors('given')}" th:errors="*{given}"></p>
+						</div>
+			
+						<div class="input-group">
+						 	<div class="input-wrapper">
+								<label for="family" class="input-label">Lastname*</label> 
+								<input class="input" name="family" type="text" placeholder="Lastname" th:field="*{family}" required />
+							</div>
+							<p class="error" th:unless="${#fields.hasErrors('family')}"></p>
+							<p class="error" th:if="${#fields.hasErrors('family')}" th:errors="*{family}"></p>
+						</div>
+			
+						<div class="input-group">
+							<div class="input-wrapper">
+								<label for="dob">Date Of Birth*</label> 
+								<input name="dob" type="date" th:field="*{dob}" required />
+							</div>
+							<p class="error" th:unless="${#fields.hasErrors('dob')}"></p>
+							<p class="error" th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}"></p>
+						</div>
+			
+						<div class="input-group">
+							<div class="input-wrapper">
+								<label>Gender*</label>
+								<input id="sexChoice1" name="sex" type="radio" value="F" th:field="*{sex}" required />
+								<label for="sexChoice1">Female</label> 
+								<input id="sexChoice2" name="sex" type="radio" value="M" th:field="*{sex}" required /> 
+								<label for="sexChoice2">Male</label>
+							</div>
+						</div>
+						
+					</div>
+					<div class="form-right">
+						<fieldset>
+						
+							<legend>Contact</legend>
+							
+							<div class="input-group">
+								<div class="input-wrapper">
+									<label for="address" class="input-label">Address</label> 
+									<input class="input" name="address" type="text" placeholder="Address" th:field="*{address}" />
+								</div>
+								<p class="error" th:unless="${#fields.hasErrors('address')}"></p>
+								<p class="error" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></p>
+							</div>
+				
+							<div class="input-group">
+								<div class="input-wrapper">
+									<label for="phone" class="input-label">Phone Number</label> 
+									<input class="input" name="phone" type="text" placeholder="012-345-6789" th:field="*{phone}" />
+								</div>
+								<p class="error" th:unless="${#fields.hasErrors('phone')}"></p>
+								<p class="error" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></p>
+							</div>
+							
+						</fieldset>
+						
+						<label>Fields marked with (*) are mandatory</label>
+						
+						<button name="patientBean" type="submit" formmethod="POST">Modify</button>
+						
+					</div>
+				</div>
+			</fieldset>
+		</form>
+		
+		<div>
+			<div class="patientTableActions">
+				<form method="GET" th:action="@{/patient/{id}/notes/add(id=${patientBean.id})}">
+					<button name="addNotes" type="submit" formmethod="GET">Add new notes</button>
+				</form>
+				
+				<div class="error" th:if="${param.notesAdd}">
+					<label>Notes has been added.</label>
 				</div>
 				
+				<div class="error" th:if="${param.notesUpt}">
+					<label>Notes has been modified.</label>
+				</div>
+				
+				<div class="error" th:if="${param.notesDel}">
+					<label>Notes has been deleted.</label>
+				</div>
+				
+				<div class="error" th:if="${param.notesError}">
+					<label>Notes could not be deleted.</label>
+				</div>
 			</div>
+						
+			<div th:each="notes: ${notesPatient}">
+			
+				<details>
+				    <summary>
+				        <span th:text="${#temporals.format(notes.dateTimeNote, 'dd/MM/yyyy HH:mm')}"></span>
+				    </summary>
+					<pre th:text="${notes.e}"></pre>
+					<div class="note-button">
+						<form method="GET" th:action="@{/patient/notes/{id}(id=${notes.notesId})}">
+							<button name="updateNotes" type="submit" formmethod="GET">Update</button>
+						</form>
+						<form method="POST" th:action="@{/patient/{patId}/notes/delete/{notesId}(notesId=${notes.notesId}, patId=${patientBean.id})}">
+							<button name="deleteNotes" type="submit" formmethod="POST">X</button>
+						</form>
+					</div>
+				</details>
 
-			<div class="error" th:if="${param.success}">
-				<p>Modifications successfully done!</p>
 			</div>
-			
-			<p>Fields marked with (*) are mandatory</p>
-			
-			<button name="patientBean" type="submit" formmethod="POST">Modify</button>
-
-		</form>
+		
+		</div>
 		
 	</div>
 	

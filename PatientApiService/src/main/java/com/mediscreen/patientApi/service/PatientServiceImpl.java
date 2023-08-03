@@ -43,16 +43,19 @@ public class PatientServiceImpl implements PatientService {
 	}
 
 	/**
-	 * Searches for patients in the database based on the provided firstname and lastname.
-	 * If both firstname and lastname are provided, it searches for patients matching both criteria.
+	 * Searches for patients in the database based on the provided firstname and
+	 * lastname. If both firstname and lastname are provided, it searches for
+	 * patients matching both criteria.
 	 *
 	 * @param firstname the firstname parameter for filtering patients by firstname.
 	 * @param lastname  the lastname parameter for filtering patients by lastname.
 	 * 
-	 * @return a list of PatientDto objects representing the patients matching the search criteria.
+	 * @return a list of PatientDto objects representing the patients matching the
+	 *         search criteria.
 	 */
 	@Override
 	public List<PatientDto> searchPatients(String firstname, String lastname) {
+		logger.info("Searching patients with firstname containing " + firstname + " and lastname containing " + lastname);
 
 		List<Patient> patients;
 		if (firstname != null && lastname != null) {
@@ -120,15 +123,11 @@ public class PatientServiceImpl implements PatientService {
 		logger.info("Trying to update patient in data base.");
 
 		Patient patient = patientRepository.findById(patientId);
-
 		if (patient == null) {
-
 			String error = "Patient: " + patientId + " not found in data base !";
 			logger.error(error);
 			throw new PatientNotFoundException(error);
-
 		} else {
-
 			patient.setFirstname(newPatientInfos.getGiven());
 			patient.setLastname(newPatientInfos.getFamily());
 			patient.setDateOfBirth(newPatientInfos.getDob());

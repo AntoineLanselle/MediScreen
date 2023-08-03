@@ -1,18 +1,23 @@
 # UserInterface
 
-This application is a User Interface (UI) for managing patient data. 
-It allows users to perform CRUD operations on patient records. 
-The UI interacts with the Patient API service to retrieve and manipulate the data.
+The User Interface Web Service is a part of the Mediscreen application. 
+It provides a user interface for managing patients and their medical notes.
 
 ## Running the Application
 
 To run the UserInterface application, follow these steps:
 
-1.Ensure that the required dependencies are installed and configured properly.
+1. Start the PatientApiService on localhost:8081.
 
-2.Start the Patient API service on localhost:8081.
+2. Start the NotesPatientService  on localhost:8082.
 
-3.Build the application using Maven or your preferred IDE.
+3. - Running from the IDE : Open your integrated development environment and run the microservice 
+     using the main class UserInterfaceWebServiceApplication.
+   - Running from .jar: If you prefer to run the microservice from the .jar file, use the following command
+     in your terminal :
+```
+	java -jar UserInterfaceWebService-0.0.1-SNAPSHOT.jar
+```
 
 4.Access the application in your web browser at localhost:8080/patient.
 
@@ -20,8 +25,6 @@ To run the UserInterface application, follow these steps:
 
 The application has the following dependencies:
 
-- Spring Boot: Provides the framework for building the application.
-- Spring Cloud OpenFeign: Enables easy integration with the Patient API service using declarative REST clients.
-- Thymeleaf: Used as the template engine for rendering HTML pages.
-- Jakarta Validation: Provides validation constraints for data fields in the PatientBean class.
-- SLF4J for logging
+- Spring Boot
+- Spring Cloud OpenFeign
+- Thymeleaf

@@ -1,4 +1,6 @@
-com\mediscreen\userInterface\controller\ClientController.class
+com\mediscreen\userInterface\beans\NotesPatientBean.class
 com\mediscreen\userInterface\UserInterfaceWebServiceApplication.class
+com\mediscreen\userInterface\proxies\NotesPatientServiceProxy.class
 com\mediscreen\userInterface\proxies\PatientApiServiceProxy.class
+com\mediscreen\userInterface\controller\InterfaceController.class
 com\mediscreen\userInterface\beans\PatientBean.class

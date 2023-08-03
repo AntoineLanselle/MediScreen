@@ -15,27 +15,36 @@
 	
 	<div class="container">
 		
-		<h1>Application MediScreen</h1>
-		
-		<div class="error" th:if="${param.delSuccess}">
-			<label>Patient has been deleted.</label>
-		</div>
-			
-		<div class="error" th:if="${param.addSuccess}">
-			<label>Patient has been added.</label>
+		<div class="logo">
+			<img src="/images/MediScreenLogo.png">
+			<h1>MediScreen</h1>
 		</div>
 
- 		<form method="GET" action="/patient/add" >
-  			<button type="submit" formmethod="GET">Add a new patient</button>
-  		</form>
-  			
-		<div class="search-bar">
-		    <form method="GET" action="/patient">
-		        <input type="text" name="firstname" placeholder="Search by Firstname...">
-		        <input type="text" name="lastname" placeholder="Search by Lastname...">
-		        <button type="submit">Search</button>
-		    </form>
-		</div>	
+		<div class="patientTableActions">
+		
+	 		<form class="addPatient" method="GET" action="/patient/add" >
+	 			<div class="form-group">
+	 		
+		  			<button type="submit" formmethod="GET">Add a new patient</button>
+		  			
+			  		<div class="error" th:if="${param.delSuccess}">
+						<label>Patient has been deleted.</label>
+					</div>
+					
+					<div class="error" th:if="${param.addSuccess}">
+						<label>Patient has been added.</label>
+					</div>
+					
+				</div>
+	  		</form>
+		
+			<form class="searchBar" method="GET" action="/patient">
+			    <input type="search" name="firstname" placeholder="Search by Firstname...">
+			    <input type="search" name="lastname" placeholder="Search by Lastname...">
+			    <button type="submit">Search</button>
+			</form>
+
+		</div>
  		 
 		<table>
 			<thead>
