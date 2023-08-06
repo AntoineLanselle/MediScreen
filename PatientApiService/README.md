@@ -14,14 +14,14 @@ To run the PatientApiService application, follow these steps:
 
 3. Run this command in your SGBD to run the sql script:
 ```
-	source path/to/application/MediScreen/PatientDatabase/data_base_structure.sql
+source path/to/application/MediScreen/PatientDatabase/data_base_structure.sql
 ```
 4. - Running from the IDE : Open your integrated development environment and run the microservice 
      using the main class PatientApiApplication.
    - Running from .jar: If you prefer to run the microservice from the .jar file, use the following command
      in your terminal :
 ```
-	java -jar PatientApiService-0.0.1-SNAPSHOT.jar
+java -jar PatientApiService-0.0.1-SNAPSHOT.jar
 ```
 
 5. The application will start running on http://localhost:8081.
