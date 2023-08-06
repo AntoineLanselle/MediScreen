@@ -1,6 +1,5 @@
 #!/bin/bash
-
-# Utiliser curl pour envoyer les données au format JSON
+# Microservice endpoint calls to set test patient demographics
 
 # Patient 1
 curl -X POST -H "Content-Type: application/json" -d '{

@@ -1,3 +1,4 @@
+#!/bin/bash
 # Microservice endpoint calls to set test patient demographics
 
 curl -d "family=TestNone&given=Test&dob=1966-12-31&sex=F&address=1 Brookside St&phone=100-222-3333" -X POST http://localhost:8081/patient/add
