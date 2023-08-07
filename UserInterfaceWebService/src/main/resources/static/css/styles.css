@@ -40,6 +40,15 @@ h1 {
 	flex-wrap: wrap;
 }
 
+.rightButtons {
+    display: flex;
+    align-items: center;
+}
+
+.rightButtons form {
+    margin-right: 10px;
+}
+
 .addPatient {
     margin-right: auto;
     display: flex;
@@ -146,18 +155,14 @@ tbody tr:hover {
 	color: #fff;
 }
 
-/*
-details {
-  margin: 30px;
-  background-color: #d7edff;
-  border-radius: 4px;
-}*/
-
 details {
 	&[open] {
 		box-shadow: -3px 0 0 #5cb85c;
+		
+		&:first-of-type {
+			border-top: 3px solid #5cb85c;
+		}
 	}
-	
 	&:first-of-type {
 		border-top: 1px solid black;
 	}
@@ -175,15 +180,6 @@ details div.note-button {
 div.note-button form {
 	margin: 0px 10px 10px 0px;
 }
-/*
-details summary {
-  border-radius: 4px;
-  padding: 15px;
-  color: black;
-  background-color: #afd7d7;
-  font-size: 20px;
-  cursor: pointer;
-}*/
 
 details summary  {
   	list-style: none;
@@ -219,4 +215,22 @@ textarea {
 	resize: none;
 	margin: 0 auto 20px auto; 
   	display: block;
+}
+
+.notification {
+    position : fixed;
+    bottom: 4px;
+    right: 4px;
+    width: max-content;
+    z-index: 9999;
+    border-radius: 6px;
+    background-color: #5cb85c;
+    color: #fff;
+    opacity: 0;
+    visibility: hidden;
+}
+
+
+.notification_body {
+	padding: 8px;
 }

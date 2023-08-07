@@ -40,7 +40,7 @@ To run the MediScreen application with Docker, follow these steps:
 
 3. Execute the following command to start all the micro-services using Docker:
 ```
-	docker-compose up
+docker-compose up
 ```
 4. Docker will pull the necessary images and start the containers for each micro-service.
 

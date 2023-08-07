@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mediscreen.userInterface.beans.NotesPatientBean;
 import com.mediscreen.userInterface.beans.PatientBean;
 import com.mediscreen.userInterface.proxies.NotesPatientServiceProxy;
 import com.mediscreen.userInterface.proxies.PatientApiServiceProxy;
+import com.mediscreen.userInterface.proxies.PatientAssessmentServiceProxy;
 
 import jakarta.validation.Valid;
 
@@ -33,11 +35,15 @@ public class InterfaceController {
 
 	private final NotesPatientServiceProxy notesProxy;
 
+	private final PatientAssessmentServiceProxy assessmentProxy;
+
 	private Logger logger = LoggerFactory.getLogger(InterfaceController.class);
 
-	public InterfaceController(PatientApiServiceProxy patientProxy, NotesPatientServiceProxy notesProxy) {
+	public InterfaceController(PatientApiServiceProxy patientProxy, NotesPatientServiceProxy notesProxy,
+			PatientAssessmentServiceProxy assessmentProxy) {
 		this.patientProxy = patientProxy;
 		this.notesProxy = notesProxy;
+		this.assessmentProxy = assessmentProxy;
 	}
 
 	/**
@@ -126,10 +132,10 @@ public class InterfaceController {
 	@GetMapping("/patient/notes/{id}")
 	public String notesUpdatePage(Model model, @PathVariable("id") int id) {
 		logger.info("GET request - get notes update page " + id);
-		
+
 		NotesPatientBean notesPatient = new NotesPatientBean();
 		notesPatient = notesProxy.getNotesById(id);
-		
+
 		model.addAttribute("notesPatientBean", notesPatient);
 		return "NotesUpdate";
 	}
@@ -186,7 +192,7 @@ public class InterfaceController {
 		logger.info("POST request - update patient " + id);
 
 		if (result.hasErrors()) {
-	        model.addAttribute("notesPatient", notesProxy.getAllPatientNotes(id));
+			model.addAttribute("notesPatient", notesProxy.getAllPatientNotes(id));
 			return "PatientDetails";
 		} else {
 			patientProxy.updatePatient(id, patientBean);
@@ -240,7 +246,8 @@ public class InterfaceController {
 	 * @return the view name to redirect after deleting the notes.
 	 */
 	@PostMapping("/patient/{patId}/notes/delete/{notesId}")
-	public String notesPatientDelete(Model model, @PathVariable("notesId") int notesId, @PathVariable("patId") int patId) {
+	public String notesPatientDelete(Model model, @PathVariable("notesId") int notesId,
+			@PathVariable("patId") int patId) {
 		logger.info("POST request - delete notes " + notesId + " of patient " + patId);
 
 		try {
@@ -249,6 +256,24 @@ public class InterfaceController {
 		} catch (Exception ex) {
 			return "redirect:/patient/" + patId + "?notesError";
 		}
+	}
+
+	/**
+	 * Handles the POST request for asses a patient's diabetes risk.
+	 *
+	 * @param id    the ID of the notes to be deleted.
+	 * @param model the model to be used for the view.
+	 * 
+	 * @return the view name to redirect after returning the assess result.
+	 */
+	@PostMapping("patient/{patId}/assess")
+	@ResponseBody
+	public String assessmentById(@PathVariable("patId") int patId, Model model) {
+		logger.info("POST request - assessmentById for patient " + patId);
+
+		String assessResult = assessmentProxy.assessmentById(patId);
+		model.addAttribute("assessResult", assessResult);
+		return assessResult;
 	}
 
 }

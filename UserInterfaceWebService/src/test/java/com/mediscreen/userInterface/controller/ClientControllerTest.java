@@ -24,6 +24,7 @@ import com.mediscreen.userInterface.beans.PatientBean;
 import com.mediscreen.userInterface.beans.NotesPatientBean;
 import com.mediscreen.userInterface.proxies.NotesPatientServiceProxy;
 import com.mediscreen.userInterface.proxies.PatientApiServiceProxy;
+import com.mediscreen.userInterface.proxies.PatientAssessmentServiceProxy;
 
 @ExtendWith(MockitoExtension.class)
 public class ClientControllerTest {
@@ -33,6 +34,9 @@ public class ClientControllerTest {
 	
 	@Mock
 	private NotesPatientServiceProxy notesProxy;
+	
+	@Mock
+	private PatientAssessmentServiceProxy assessmentProxy;
 
 	@InjectMocks
 	private InterfaceController clientController;
@@ -269,6 +273,22 @@ public class ClientControllerTest {
         // THEN
         assertEquals("redirect:/patient/1?notesError", resultView);
         verify(notesProxy).deleteNotes(notesId);
+    }
+    
+    @Test
+    public void testAssessmentById() {
+        // GIVEN
+        int patId = 1;
+        String expectedAssessResult = "Some assessment result";
+        when(assessmentProxy.assessmentById(patId)).thenReturn(expectedAssessResult);
+
+        // WHEN
+        String assessResult = clientController.assessmentById(patId, model);
+
+        // THEN
+        assertEquals(expectedAssessResult, assessResult);
+        verify(assessmentProxy).assessmentById(patId);
+        verify(model).addAttribute("assessResult", expectedAssessResult);
     }
 	
 }

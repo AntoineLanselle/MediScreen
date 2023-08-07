@@ -1,4 +1,4 @@
-package com.mediscreen.userInterface.beans;
+package com.mediscreen.PatientAssesmentService.beans;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,6 +31,36 @@ public class PatientAssessmentController {
 	private PatientAssessmentService assessmentService;
 
 	/**
+	 * Assess a patient by their ID using Json data format.
+	 *
+	 * @param id The ID of the patient to be assessed.
+	 * @return a ResponseEntity with HTTP OK status and the assess result as the
+	 *         response body. If the patient is not found, returns HTTP NOT_FOUND
+	 *         status.
+	 */
+	@PostMapping(path = "/assess/id", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> assessmentByIdJson(@RequestParam int patId) {
+		logger.info("POST request - assessmentById " + patId + " using Json");
+
+		return assessmentById(patId);
+	}
+
+	/**
+	 * Assess a patient by their ID using URL-encoded form data format.
+	 *
+	 * @param id The ID of the patient to be assessed.
+	 * @return a ResponseEntity with HTTP OK status and the assess result as the
+	 *         response body. If the patient is not found, returns HTTP NOT_FOUND
+	 *         status.
+	 */
+	@PostMapping(path = "/assess/id", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public ResponseEntity<String> assessmentByIdUrl(@RequestParam int patId) {
+		logger.info("POST request - assessmentById " + patId + " using URL encoded");
+
+		return assessmentById(patId);
+	}
+
+	/**
 	 * Assess a patient by their ID.
 	 *
 	 * @param id The ID of the patient to be assessed.
@@ -37,15 +68,51 @@ public class PatientAssessmentController {
 	 *         response body. If the patient is not found, returns HTTP NOT_FOUND
 	 *         status.
 	 */
-	@PostMapping("/assess/id")
-	public ResponseEntity<String> assessmentById(@RequestParam(required = true) int id) {
-		logger.info("POST request - assessmentById " + id);
+	private ResponseEntity<String> assessmentById(int patId) {
 		try {
-			PatientBean patient = assessmentService.getPatientById(id);
+			PatientBean patient = assessmentService.getPatientById(patId);
 			return ResponseEntity.status(HttpStatus.OK).body(assessmentService.getAssessmentResult(patient));
 		} catch (PatientNotFoundException ex) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
 		}
+	}
+
+	/**
+	 * Assess a patient by their family name and optionally their given name using
+	 * Json data format.
+	 *
+	 * @param familyName The family name of the patient to be assessed.
+	 * @param given      The given name of the patient (optional).
+	 * 
+	 * @return a ResponseEntity with HTTP OK status and the assess result as the
+	 *         response body. If the patient is not found, returns HTTP NOT_FOUND
+	 *         status.
+	 */
+	@PostMapping(path = "/assess/familyName", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> assessmentByNameJson(@RequestParam(required = true) String familyName,
+			@RequestParam(required = false) String given) {
+		logger.info("POST request - assessmentByName " + familyName + " " + given + " using Json");
+
+		return assessmentByName(familyName, given);
+	}
+
+	/**
+	 * Assess a patient by their family name and optionally their given name using
+	 * URL-encoded form data format.
+	 *
+	 * @param familyName The family name of the patient to be assessed.
+	 * @param given      The given name of the patient (optional).
+	 * 
+	 * @return a ResponseEntity with HTTP OK status and the assess result as the
+	 *         response body. If the patient is not found, returns HTTP NOT_FOUND
+	 *         status.
+	 */
+	@PostMapping(path = "/assess/familyName", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public ResponseEntity<String> assessmentByNameUrl(@RequestParam(required = true) String familyName,
+			@RequestParam(required = false) String given) {
+		logger.info("POST request - assessmentByName " + familyName + " " + given + " using URL encoded");
+
+		return assessmentByName(familyName, given);
 	}
 
 	/**
@@ -58,10 +125,7 @@ public class PatientAssessmentController {
 	 *         response body. If the patient is not found, returns HTTP NOT_FOUND
 	 *         status.
 	 */
-	@PostMapping("/assess/familyName")
-	public ResponseEntity<String> assessmentByName(@RequestParam(required = true) String familyName,
-			@RequestParam(required = false) String given) {
-		logger.info("POST request - assessmentByName " + familyName + " " + given);
+	private ResponseEntity<String> assessmentByName(String familyName, String given) {
 		try {
 			PatientBean patient = assessmentService.getPatientByFamilyNameAndGiven(familyName, given);
 			return ResponseEntity.status(HttpStatus.OK).body(assessmentService.getAssessmentResult(patient));
