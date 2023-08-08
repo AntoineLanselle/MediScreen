@@ -36,7 +36,7 @@ The Mediscreen application comprises the following micro-services:
 
 ## Diagram
 
-![Diagram](util/images/Diagram.png)
+![Diagram](util/images/diagram.png)
 
 ## Running the Application
 
