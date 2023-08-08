@@ -7,11 +7,12 @@ The application consists of multiple micro-services, each responsible for specif
 ## Note
 
 In order to simplify the application's code and facilitate maintenance, 
-slight modifications have been made :
-	- In the queries provided for adding notes, replacing the "¬" symbols with "&".
-	- The request port for PatientAssessmentService test requests is now 8083.
-	- The patients have aged since the project was created, so their dates of birth have been modified 
-	  to match the responses expected by the PatientAssessmentService tests.
+slight modifications have been made.
+
+- In the queries provided for adding notes, replacing the "¬" symbols with "&".
+- The request port for PatientAssessmentService test requests is now 8083.
+- The patients have aged since the project was created, so their dates of birth have been modified 
+  to match the responses expected by the PatientAssessmentService tests.
 
 Scripts of these queries with changes are available in [util/scripts](util/scripts)
 
@@ -35,7 +36,7 @@ The Mediscreen application comprises the following micro-services:
 
 ## Diagram
 
-![Diagram](util/images/diagram.png)
+![Diagram](util/images/Diagram.png)
 
 ## Running the Application
 
