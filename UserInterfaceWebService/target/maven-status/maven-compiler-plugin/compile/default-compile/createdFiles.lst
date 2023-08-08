@@ -1,3 +1,4 @@
+com\mediscreen\userInterface\proxies\PatientAssessmentServiceProxy.class
 com\mediscreen\userInterface\beans\NotesPatientBean.class
 com\mediscreen\userInterface\UserInterfaceWebServiceApplication.class
 com\mediscreen\userInterface\proxies\NotesPatientServiceProxy.class

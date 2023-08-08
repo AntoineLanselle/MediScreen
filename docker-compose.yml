@@ -48,6 +48,19 @@ services:
         restart: on-failure
         ports:
             - 8082:8082
+
+    patient-assessment:
+        image: patient-assessment:latest
+        container_name: patient-assessment
+        build:
+            context: PatientAssessmentService
+            dockerfile: Dockerfile
+        depends_on:
+            - patient-api
+            - notes-database
+        restart: on-failure
+        ports:
+            - 8083:8083
             
     user-interface:
         image: user-interface:latest
@@ -58,6 +71,7 @@ services:
         depends_on:
             - patient-api
             - notes-patient
+            - patient-assessment
         restart: on-failure
         ports: 
             - 8080:8080
