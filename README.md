@@ -7,7 +7,13 @@ The application consists of multiple micro-services, each responsible for specif
 ## Note
 
 In order to simplify the application's code and facilitate maintenance, 
-slight modifications have been made to the queries provided for adding notes, replacing the "¬" symbols with "&".
+slight modifications have been made :
+	- In the queries provided for adding notes, replacing the "¬" symbols with "&".
+	- The request port for PatientAssessmentService test requests is now 8083.
+	- The patients have aged since the project was created, so their dates of birth have been modified 
+	  to match the responses expected by the PatientAssessmentService tests.
+
+Scripts of these queries with changes are available in [util/scripts](util/scripts)
 
 ## Micro-Services
 
@@ -19,6 +25,9 @@ The Mediscreen application comprises the following micro-services:
 
 * Notes Patient Service: This micro-service manages medical notes for patients. 
   It allows medical professionals to add, update, and delete medical notes associated with specific patients.
+
+* PatientAssessment Service: This micro-service is responsible for providing diabetes risk assessment 
+  for patients based on their medical notes and personal information.
 
 * User Interface Web Service: This micro-service provides a user interface for medical professionals to interact
   with the system. It enables them to manage patient data, view medical notes, 
@@ -48,6 +57,7 @@ docker-compose up
 	- user-interface running on http://localhost:8080.
 	- patient-api running on http://localhost:8081.
 	- notes-patient running on http://localhost:8082.
+	- patient-assessment running on http://localhost:8083.
 
 ### By Running Micro-Services Individually
 
@@ -57,6 +67,7 @@ docker-compose up
 	- user-interface running on http://localhost:8080.
 	- patient-api running on http://localhost:8081.
 	- notes-patient running on http://localhost:8082.
+	- patient-assessment running on http://localhost:8083.
 
 ## Endpoints and APIs
 

@@ -280,14 +280,14 @@ public class ClientControllerTest {
         // GIVEN
         int patId = 1;
         String expectedAssessResult = "Some assessment result";
-        when(assessmentProxy.assessmentById(patId)).thenReturn(expectedAssessResult);
+        when(assessmentProxy.assessmentByIdJson(patId)).thenReturn(expectedAssessResult);
 
         // WHEN
         String assessResult = clientController.assessmentById(patId, model);
 
         // THEN
         assertEquals(expectedAssessResult, assessResult);
-        verify(assessmentProxy).assessmentById(patId);
+        verify(assessmentProxy).assessmentByIdJson(patId);
         verify(model).addAttribute("assessResult", expectedAssessResult);
     }
 	

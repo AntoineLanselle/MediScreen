@@ -15,10 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface PatientAssessmentServiceProxy {
 
 	@PostMapping("/assess/id")
-	public String assessmentById(@RequestParam int id);
-
-	@PostMapping("/assess/familyName")
-	public String assessmentByName(@RequestParam(required = true) String familyName,
-			@RequestParam(required = false) String given);
+	public String assessmentByIdJson(@RequestParam int patId);
 
 }

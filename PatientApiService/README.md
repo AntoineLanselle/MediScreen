@@ -3,6 +3,11 @@
 This application provides a RESTful API for managing patient-related operations. 
 It allows retrieving, adding, updating, and deleting patient records. 
 
+## Note
+
+To match the responses expected by the PatientAssessmentService tests, the patients' dates of birth have been 
+modified as they have aged since the project was created. 
+
 ## Running the Application
 
 To run the PatientApiService application, follow these steps:
@@ -14,7 +19,7 @@ To run the PatientApiService application, follow these steps:
 
 3. Run this command in your SGBD to run the sql script:
 ```
-source path/to/application/MediScreen/PatientDatabase/data_base_structure.sql
+source path/to/application/MediScreen/util/database/databaseStructure.sql
 ```
 4. - Running from the IDE : Open your integrated development environment and run the microservice 
      using the main class PatientApiApplication.

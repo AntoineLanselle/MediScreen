@@ -271,7 +271,7 @@ public class InterfaceController {
 	public String assessmentById(@PathVariable("patId") int patId, Model model) {
 		logger.info("POST request - assessmentById for patient " + patId);
 
-		String assessResult = assessmentProxy.assessmentById(patId);
+		String assessResult = assessmentProxy.assessmentByIdJson(patId);
 		model.addAttribute("assessResult", assessResult);
 		return assessResult;
 	}

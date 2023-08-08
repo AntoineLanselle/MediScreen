@@ -3,6 +3,12 @@
 This application is responsible for providing diabetes risk assessment for patients based on their medical notes
 and personal information. It communicates with two other services, the NotesPatientService and the PatientApiService.
 
+## Note
+
+In order to simplify the application's code and facilitate maintenance, changes have been made to the test requests 
+the request port is now 8083 instead of 8080 so that these requests are managed directly 
+by PatientAssessmentService instead of going through UserInterfaceService.
+
 ## Running the Application
 
 To run the PatientAssessment application, follow these steps:
@@ -25,8 +31,9 @@ java -jar PatientAssessmentService-0.0.1-SNAPSHOT.jar
 
 The PatientAssessmentService provides the following endpoints:
 
-- POST /assess/id: Assess a patient by their ID.
-- POST /assess/familyName: Assess a patient by their family name and optionally their given name.
+- POST /assess/id: Assess a patient by their ID using either JSON or URL-encoded data format.
+- POST /assess/familyName: Assess a patient by their family name and optionally their given name 
+                           using either JSON or URL-encoded data format.
 
 ## Dependencies
 
