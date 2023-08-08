@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InterfaceController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">UserInterfaceWebService</a> &gt; <a href="index.source.html" class="el_package">com.mediscreen.userInterface.controller</a> &gt; <span class="el_source">InterfaceController.java</span></div><h1>InterfaceController.java</h1><pre class="source lang-java linenums">package com.mediscreen.userInterface.controller;
+
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.mediscreen.userInterface.beans.NotesPatientBean;
+import com.mediscreen.userInterface.beans.PatientBean;
+import com.mediscreen.userInterface.proxies.NotesPatientServiceProxy;
+import com.mediscreen.userInterface.proxies.PatientApiServiceProxy;
+import com.mediscreen.userInterface.proxies.PatientAssessmentServiceProxy;
+
+import jakarta.validation.Valid;
+
+/**
+ * ClientController is a controller class that handles requests related to
+ * patient management.
+ * 
+ * @author Antoine Lanselle
+ */
+@Controller
+public class InterfaceController {
+
+	private final PatientApiServiceProxy patientProxy;
+
+	private final NotesPatientServiceProxy notesProxy;
+
+	private final PatientAssessmentServiceProxy assessmentProxy;
+
+<span class="fc" id="L40">	private Logger logger = LoggerFactory.getLogger(InterfaceController.class);</span>
+
+	public InterfaceController(PatientApiServiceProxy patientProxy, NotesPatientServiceProxy notesProxy,
+<span class="fc" id="L43">			PatientAssessmentServiceProxy assessmentProxy) {</span>
+<span class="fc" id="L44">		this.patientProxy = patientProxy;</span>
+<span class="fc" id="L45">		this.notesProxy = notesProxy;</span>
+<span class="fc" id="L46">		this.assessmentProxy = assessmentProxy;</span>
+<span class="fc" id="L47">	}</span>
+
+	/**
+	 * Handles a GET request to retrieve the patient list page.
+	 *
+	 * @param model     the Model object used to pass data to the view.
+	 * @param firstname the optional firstname parameter for filtering patients by
+	 *                  firstname.
+	 * @param lastname  the optional lastname parameter for filtering patients by
+	 *                  lastname.
+	 * 
+	 * @return the view name for the patient list page.
+	 */
+	@GetMapping(&quot;/patient&quot;)
+	public String patientListPage(Model model, @RequestParam(required = false) String firstname,
+			@RequestParam(required = false) String lastname) {
+<span class="fc" id="L63">		logger.info(&quot;GET request - get patient list page&quot;);</span>
+
+		List&lt;PatientBean&gt; patients;
+<span class="pc bpc" id="L66" title="1 of 4 branches missed.">		if (firstname != null || lastname != null) {</span>
+<span class="fc" id="L67">			patients = patientProxy.searchPatients(firstname, lastname);</span>
+		} else {
+<span class="fc" id="L69">			patients = patientProxy.getAllPatients();</span>
+		}
+<span class="fc" id="L71">		model.addAttribute(&quot;patients&quot;, patients);</span>
+<span class="fc" id="L72">		return &quot;PatientList&quot;;</span>
+	}
+
+	/**
+	 * Handles the GET request for the patient add page.
+	 *
+	 * @param model the model to be used for the view.
+	 * 
+	 * @return the view name for the patient add page.
+	 */
+	@GetMapping(&quot;/patient/add&quot;)
+	public String patientAddPage(Model model) {
+<span class="fc" id="L84">		logger.info(&quot;GET request - get patient add page&quot;);</span>
+
+<span class="fc" id="L86">		model.addAttribute(&quot;patientBean&quot;, new PatientBean());</span>
+<span class="fc" id="L87">		return &quot;PatientAdd&quot;;</span>
+	}
+
+	/**
+	 * Handles the GET request for the notes add page.
+	 *
+	 * @param model the model to be used for the view.
+	 * 
+	 * @return the view name for the notes add page.
+	 */
+	@GetMapping(&quot;/patient/{id}/notes/add&quot;)
+	public String notesAddPage(Model model, @PathVariable(&quot;id&quot;) int id) {
+<span class="fc" id="L99">		logger.info(&quot;GET request - get notes add page&quot;);</span>
+
+<span class="fc" id="L101">		NotesPatientBean notesPatient = new NotesPatientBean();</span>
+<span class="fc" id="L102">		notesPatient.setPatId(id);</span>
+<span class="fc" id="L103">		model.addAttribute(&quot;notesPatientBean&quot;, notesPatient);</span>
+<span class="fc" id="L104">		return &quot;NotesAdd&quot;;</span>
+	}
+
+	/**
+	 * Handles the GET request for the patient details page.
+	 *
+	 * @param model the model to be used for the view.
+	 * @param id    the ID of the patient to be displayed.
+	 * 
+	 * @return the view name for the patient details page.
+	 */
+	@GetMapping(&quot;/patient/{id}&quot;)
+	public String patientDetailsPage(Model model, @PathVariable(&quot;id&quot;) int id) {
+<span class="fc" id="L117">		logger.info(&quot;GET request - get patient details page&quot;);</span>
+
+<span class="fc" id="L119">		model.addAttribute(&quot;patientBean&quot;, patientProxy.getPatient(id));</span>
+<span class="fc" id="L120">		model.addAttribute(&quot;notesPatient&quot;, notesProxy.getAllPatientNotes(id));</span>
+<span class="fc" id="L121">		return &quot;PatientDetails&quot;;</span>
+	}
+
+	/**
+	 * Handles the GET request for the notes update page.
+	 *
+	 * @param model the model to be used for the view.
+	 * @param id    the ID of the notes to be displayed.
+	 * 
+	 * @return the view name for the notes update page.
+	 */
+	@GetMapping(&quot;/patient/notes/{id}&quot;)
+	public String notesUpdatePage(Model model, @PathVariable(&quot;id&quot;) int id) {
+<span class="fc" id="L134">		logger.info(&quot;GET request - get notes update page &quot; + id);</span>
+
+<span class="fc" id="L136">		NotesPatientBean notesPatient = new NotesPatientBean();</span>
+<span class="fc" id="L137">		notesPatient = notesProxy.getNotesById(id);</span>
+
+<span class="fc" id="L139">		model.addAttribute(&quot;notesPatientBean&quot;, notesPatient);</span>
+<span class="fc" id="L140">		return &quot;NotesUpdate&quot;;</span>
+	}
+
+	/**
+	 * Handles the POST request for adding a patient.
+	 *
+	 * @param patientBean the PatientBean object containing the patient data.
+	 * @param result      the binding result for data validation.
+	 * 
+	 * @return the view name to redirect after adding the patient.
+	 */
+	@PostMapping(&quot;/patient/add&quot;)
+	public String patientAdd(@Valid @ModelAttribute(&quot;patientBean&quot;) PatientBean patientBean, BindingResult result) {
+<span class="fc" id="L153">		logger.info(&quot;POST request - add patient&quot; + patientBean.getGiven() + &quot;, &quot; + patientBean.getFamily());</span>
+
+<span class="fc bfc" id="L155" title="All 2 branches covered.">		if (result.hasErrors()) {</span>
+<span class="fc" id="L156">			return &quot;PatientAdd&quot;;</span>
+		} else {
+<span class="fc" id="L158">			patientProxy.addPatientJson(patientBean);</span>
+<span class="fc" id="L159">			return &quot;redirect:/patient?addSuccess&quot;;</span>
+		}
+	}
+
+	/**
+	 * Handles the POST request for adding a notes.
+	 *
+	 * @param notesPatientBean the NotesPatientBean object containing the notes
+	 *                         data.
+	 * 
+	 * @return the view name to redirect after adding the notes.
+	 */
+	@PostMapping(&quot;/patient/notes/add&quot;)
+	public String notesPatientAdd(@ModelAttribute(&quot;notesPatientBean&quot;) NotesPatientBean notesPatientBean) {
+<span class="fc" id="L173">		logger.info(&quot;POST request - add notes for patient &quot; + notesPatientBean.getPatId());</span>
+
+<span class="fc" id="L175">		notesProxy.addNotesJson(notesPatientBean);</span>
+<span class="fc" id="L176">		return &quot;redirect:/patient/&quot; + notesPatientBean.getPatId() + &quot;?notesAdd&quot;;</span>
+	}
+
+	/**
+	 * Handles the POST request for updating a patient.
+	 *
+	 * @param patientBean the PatientBean object containing the updated patient
+	 *                    data.
+	 * @param result      the binding result for data validation.
+	 * @param id          the ID of the patient to be updated.
+	 * 
+	 * @return the view name to redirect after updating the patient.
+	 */
+	@PostMapping(&quot;/patient/{id}&quot;)
+	public String patientUpdate(@Valid @ModelAttribute(&quot;patientBean&quot;) PatientBean patientBean, BindingResult result,
+			@PathVariable(&quot;id&quot;) int id, Model model) {
+<span class="fc" id="L192">		logger.info(&quot;POST request - update patient &quot; + id);</span>
+
+<span class="fc bfc" id="L194" title="All 2 branches covered.">		if (result.hasErrors()) {</span>
+<span class="fc" id="L195">			model.addAttribute(&quot;notesPatient&quot;, notesProxy.getAllPatientNotes(id));</span>
+<span class="fc" id="L196">			return &quot;PatientDetails&quot;;</span>
+		} else {
+<span class="fc" id="L198">			patientProxy.updatePatient(id, patientBean);</span>
+<span class="fc" id="L199">			return &quot;redirect:/patient/&quot; + id + &quot;?success&quot;;</span>
+		}
+	}
+
+	/**
+	 * Handles the POST request for updating a notes.
+	 *
+	 * @param notesPatientBean the NotesPatientBean object containing the updated
+	 *                         notes data.
+	 * @param id               the ID of the notes to be updated.
+	 * 
+	 * @return the view name to redirect after updating the notes.
+	 */
+	@PostMapping(&quot;/patient/notes/update&quot;)
+	public String notesPatientUpdate(@ModelAttribute(&quot;notesPatientBean&quot;) NotesPatientBean notesPatientBean) {
+<span class="fc" id="L214">		logger.info(&quot;POST request - update notes &quot; + notesPatientBean.getNotesId());</span>
+
+<span class="fc" id="L216">		notesProxy.updateNotes(notesPatientBean);</span>
+<span class="fc" id="L217">		return &quot;redirect:/patient/&quot; + notesPatientBean.getPatId() + &quot;?notesUpt&quot;;</span>
+	}
+
+	/**
+	 * Handles the POST request for deleting a patient.
+	 *
+	 * @param model the model to be used for the view.
+	 * @param id    the ID of the patient to be deleted.
+	 * 
+	 * @return the view name to redirect after deleting the patient.
+	 */
+	@PostMapping(&quot;/patient/delete/{id}&quot;)
+	public String patientDelete(Model model, @PathVariable(&quot;id&quot;) int id) {
+<span class="fc" id="L230">		logger.info(&quot;POST request - delete patient &quot; + id);</span>
+
+		try {
+<span class="fc" id="L233">			patientProxy.deletePatient(id);</span>
+<span class="fc" id="L234">			return &quot;redirect:/patient?delSuccess&quot;;</span>
+<span class="fc" id="L235">		} catch (Exception ex) {</span>
+<span class="fc" id="L236">			return &quot;redirect:/patient?delError&quot;;</span>
+		}
+	}
+
+	/**
+	 * Handles the POST request for deleting a patient's notes.
+	 *
+	 * @param model the model to be used for the view.
+	 * @param id    the ID of the notes to be deleted.
+	 * 
+	 * @return the view name to redirect after deleting the notes.
+	 */
+	@PostMapping(&quot;/patient/{patId}/notes/delete/{notesId}&quot;)
+	public String notesPatientDelete(Model model, @PathVariable(&quot;notesId&quot;) int notesId,
+			@PathVariable(&quot;patId&quot;) int patId) {
+<span class="fc" id="L251">		logger.info(&quot;POST request - delete notes &quot; + notesId + &quot; of patient &quot; + patId);</span>
+
+		try {
+<span class="fc" id="L254">			notesProxy.deleteNotes(notesId);</span>
+<span class="fc" id="L255">			return &quot;redirect:/patient/&quot; + patId + &quot;?notesDel&quot;;</span>
+<span class="fc" id="L256">		} catch (Exception ex) {</span>
+<span class="fc" id="L257">			return &quot;redirect:/patient/&quot; + patId + &quot;?notesError&quot;;</span>
+		}
+	}
+
+	/**
+	 * Handles the POST request for asses a patient's diabetes risk.
+	 *
+	 * @param id    the ID of the notes to be deleted.
+	 * @param model the model to be used for the view.
+	 * 
+	 * @return the view name to redirect after returning the assess result.
+	 */
+	@PostMapping(&quot;patient/{patId}/assess&quot;)
+	@ResponseBody
+	public String assessmentById(@PathVariable(&quot;patId&quot;) int patId, Model model) {
+<span class="fc" id="L272">		logger.info(&quot;POST request - assessmentById for patient &quot; + patId);</span>
+
+<span class="fc" id="L274">		String assessResult = assessmentProxy.assessmentByIdJson(patId);</span>
+<span class="fc" id="L275">		model.addAttribute(&quot;assessResult&quot;, assessResult);</span>
+<span class="fc" id="L276">		return assessResult;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

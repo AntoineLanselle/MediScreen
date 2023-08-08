@@ -1,0 +1,9 @@
+com\mediscreen\PatientAssesmentService\exception\PatientNotFoundException.class
+com\mediscreen\PatientAssesmentService\PatientAssessmentServiceApplication.class
+com\mediscreen\PatientAssesmentService\controller\PatientAssessmentController.class
+com\mediscreen\PatientAssesmentService\beans\NotesPatientBean.class
+com\mediscreen\PatientAssesmentService\proxies\NotesPatientServiceProxy.class
+com\mediscreen\PatientAssesmentService\proxies\PatientApiServiceProxy.class
+com\mediscreen\PatientAssesmentService\service\PatientAssessmentServiceImpl.class
+com\mediscreen\PatientAssesmentService\beans\PatientBean.class
+com\mediscreen\PatientAssesmentService\service\PatientAssessmentService.class

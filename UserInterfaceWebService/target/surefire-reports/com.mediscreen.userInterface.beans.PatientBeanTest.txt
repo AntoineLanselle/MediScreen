@@ -1,4 +1,12 @@
 -------------------------------------------------------------------------------
 Test set: com.mediscreen.userInterface.beans.PatientBeanTest
 -------------------------------------------------------------------------------
-Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.244 s - in com.mediscreen.userInterface.beans.PatientBeanTest
+<<<<<<< HEAD
+<<<<<<< HEAD
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.243 s - in com.mediscreen.userInterface.beans.PatientBeanTest
+=======
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.22 s - in com.mediscreen.userInterface.beans.PatientBeanTest
+>>>>>>> 7b85438 (Clean package of all services)
+=======
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.243 s - in com.mediscreen.userInterface.beans.PatientBeanTest
+>>>>>>> be49c38 (small fixes)

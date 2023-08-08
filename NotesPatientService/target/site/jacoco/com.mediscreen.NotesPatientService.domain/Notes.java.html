@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Notes.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">NotesPatientService</a> &gt; <a href="index.source.html" class="el_package">com.mediscreen.NotesPatientService.domain</a> &gt; <span class="el_source">Notes.java</span></div><h1>Notes.java</h1><pre class="source lang-java linenums">package com.mediscreen.NotesPatientService.domain;
+
+import java.time.LocalDateTime;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
+import com.mediscreen.NotesPatientService.dto.NotesDto;
+
+/**
+ * Represents a Notes entity in the system. Stores information about a notes.
+ *
+ * @author Antoine Lanselle
+ */
+@Document(collection = &quot;notes&quot;)
+public class Notes {
+
+	@Id
+	private int notesId;
+
+	@Field(value = &quot;patientId&quot;)
+	private int patientId;
+
+	@Field(&quot;dateTime&quot;)
+	private LocalDateTime dateTimeNote;
+
+	@Field(value = &quot;notes&quot;)
+	private String notes;
+
+<span class="fc" id="L31">	public Notes() {</span>
+<span class="fc" id="L32">	}</span>
+
+<span class="nc" id="L34">	public Notes(int patientId, LocalDateTime dateTimeNote, String notes) {</span>
+<span class="nc" id="L35">		this.patientId = patientId;</span>
+<span class="nc" id="L36">		this.dateTimeNote = dateTimeNote;</span>
+<span class="nc" id="L37">		this.notes = notes;</span>
+<span class="nc" id="L38">	}</span>
+
+<span class="fc" id="L40">	public Notes(NotesDto notesDto) {</span>
+<span class="fc" id="L41">		this.patientId = notesDto.getPatId();</span>
+<span class="fc" id="L42">		this.dateTimeNote = notesDto.getDateTimeNote();</span>
+<span class="fc" id="L43">		this.notes = notesDto.getE();</span>
+<span class="fc" id="L44">	}</span>
+
+	public int getNotesId() {
+<span class="fc" id="L47">		return notesId;</span>
+	}
+
+	public void setNotesId(int notesId) {
+<span class="fc" id="L51">		this.notesId = notesId;</span>
+<span class="fc" id="L52">	}</span>
+
+	public int getPatientId() {
+<span class="fc" id="L55">		return patientId;</span>
+	}
+
+	public void setPatientId(int patientId) {
+<span class="nc" id="L59">		this.patientId = patientId;</span>
+<span class="nc" id="L60">	}</span>
+
+	public LocalDateTime getDateTimeNote() {
+<span class="fc" id="L63">		return dateTimeNote;</span>
+	}
+
+	public void setDateTimeNote(LocalDateTime dateTimeNote) {
+<span class="nc" id="L67">		this.dateTimeNote = dateTimeNote;</span>
+<span class="nc" id="L68">	}</span>
+
+	public String getNotes() {
+<span class="fc" id="L71">		return notes;</span>
+	}
+
+	public void setNotes(String notes) {
+<span class="fc" id="L75">		this.notes = notes;</span>
+<span class="fc" id="L76">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

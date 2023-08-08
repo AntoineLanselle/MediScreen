@@ -1,0 +1,3 @@
+com\mediscreen\PatientAssesmentService\service\PatientAssessmentServiceImplTest.class
+com\mediscreen\PatientAssesmentService\controller\PatientAssessmentControllerTest.class
+com\mediscreen\PatientAssesmentService\beans\PatientBeanTest.class

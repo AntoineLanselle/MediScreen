@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PatientAssessmentServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PatientAssessmentService</a> &gt; <a href="index.source.html" class="el_package">com.mediscreen.PatientAssesmentService.service</a> &gt; <span class="el_source">PatientAssessmentServiceImpl.java</span></div><h1>PatientAssessmentServiceImpl.java</h1><pre class="source lang-java linenums">package com.mediscreen.PatientAssesmentService.service;
+
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import com.mediscreen.PatientAssesmentService.beans.NotesPatientBean;
+import com.mediscreen.PatientAssesmentService.beans.PatientBean;
+import com.mediscreen.PatientAssesmentService.exception.PatientNotFoundException;
+import com.mediscreen.PatientAssesmentService.proxies.NotesPatientServiceProxy;
+import com.mediscreen.PatientAssesmentService.proxies.PatientApiServiceProxy;
+
+import feign.FeignException;
+
+/**
+ * Implementation of the PatientAssessmentService interface. This class provides
+ * the actual implementation for patient assessment.
+ * 
+ * @author Antoine Lanselle
+ */
+@Service
+public class PatientAssessmentServiceImpl implements PatientAssessmentService {
+
+<span class="fc" id="L30">	private Logger logger = LoggerFactory.getLogger(PatientAssessmentServiceImpl.class);</span>
+
+<span class="fc" id="L32">	private final static List&lt;String&gt; TRIGGERS = Arrays.asList(&quot;Hemoglobin A1C&quot;, &quot;Microalbumin&quot;, &quot;Height&quot;, &quot;Weight&quot;,</span>
+			&quot;Smoker&quot;, &quot;Abnormal&quot;, &quot;Cholesterol&quot;, &quot;Dizziness&quot;, &quot;Relapse&quot;, &quot;Reaction&quot;, &quot;Antibodies&quot;);
+
+	private final PatientApiServiceProxy patientProxy;
+
+	private final NotesPatientServiceProxy notesProxy;
+
+<span class="fc" id="L39">	public PatientAssessmentServiceImpl(PatientApiServiceProxy patientProxy, NotesPatientServiceProxy notesProxy) {</span>
+<span class="fc" id="L40">		this.patientProxy = patientProxy;</span>
+<span class="fc" id="L41">		this.notesProxy = notesProxy;</span>
+<span class="fc" id="L42">	}</span>
+
+	/**
+	 * Retrieves a patient by their unique identifier.
+	 *
+	 * @param id The ID of the patient to retrieve.
+	 * @return The PatientBean representing the patient with the given ID.
+	 * @throws PatientNotFoundException If the patient with the given ID doesn't
+	 *                                  exist.
+	 */
+	@Override
+	public PatientBean getPatientById(int id) {
+<span class="fc" id="L54">		logger.info(&quot;Attempting to retrieve patient with ID: &quot; + id);</span>
+		try {
+<span class="fc" id="L56">			PatientBean patient = patientProxy.getPatient(id);</span>
+<span class="fc" id="L57">			logger.info(&quot;Patient &quot; + id + &quot; retrieved successfully.&quot;);</span>
+<span class="fc" id="L58">			return patient;</span>
+<span class="fc" id="L59">		} catch (FeignException.NotFound ex) {</span>
+<span class="fc" id="L60">			String error = ex.getMessage() + &quot; \n the Patient with this id doesn't exist.&quot;;</span>
+<span class="fc" id="L61">			logger.error(&quot;Error while retrieving patient &quot; + id + &quot; &quot; + error);</span>
+<span class="fc" id="L62">			throw new PatientNotFoundException(error);</span>
+		}
+	}
+
+	/**
+	 * Retrieves a patient by their family name and given name.
+	 *
+	 * @param familyName The family name of the patient to retrieve.
+	 * @param given      The given name of the patient to retrieve.
+	 * @return The PatientBean representing the patient with the given family name
+	 *         and given name.
+	 * @throws PatientNotFoundException If no patient with the given name exists or
+	 *                                  if there are multiple patients with the same
+	 *                                  name.
+	 */
+	@Override
+	public PatientBean getPatientByFamilyNameAndGiven(String familyName, String given) {
+<span class="fc" id="L79">		logger.info(&quot;Attempting to retrieve patient &quot; + familyName + &quot; &quot; + given);</span>
+<span class="fc" id="L80">		List&lt;PatientBean&gt; patientList = this.patientProxy.searchPatients(given, familyName);</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">		if (patientList.size() &gt; 1) {</span>
+<span class="fc" id="L82">			String error = &quot;the Patient cannot be found because this name corresponds to several Patients.&quot;;</span>
+<span class="fc" id="L83">			logger.error(error);</span>
+<span class="fc" id="L84">			throw new PatientNotFoundException(error);</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">		} else if (patientList.size() &lt; 1) {</span>
+<span class="fc" id="L86">			String error = &quot;the Patient with this name doesn't exist.&quot;;</span>
+<span class="fc" id="L87">			logger.error(error);</span>
+<span class="fc" id="L88">			throw new PatientNotFoundException(error);</span>
+		} else {
+<span class="fc" id="L90">			PatientBean patient = patientList.get(0);</span>
+<span class="fc" id="L91">			logger.info(&quot;Patient &quot; + familyName + &quot; &quot; + given + &quot; retrieved successfully.&quot;);</span>
+<span class="fc" id="L92">			return patient;</span>
+		}
+	}
+
+	/**
+	 * Retrieves the assessment result for a given patient.
+	 *
+	 * @param patient The PatientBean representing the patient to assess.
+	 * @return The assessment result as a String indicating the diabetes risk level
+	 *         of the patient.
+	 */
+	@Override
+	public String getAssessmentResult(PatientBean patient) {
+<span class="fc" id="L105">		logger.info(&quot;Assessing diabetes risk for patient &quot; + patient.getId());</span>
+<span class="fc" id="L106">		List&lt;NotesPatientBean&gt; notesList = notesProxy.getAllPatientNotes(patient.getId());</span>
+<span class="fc" id="L107">		int triggersNumber = searchTriggersInNotes(notesList);</span>
+<span class="fc" id="L108">		int agePatient = calculateAge(patient.getDob());</span>
+<span class="fc" id="L109">		String genderPatient = patient.getSex();</span>
+<span class="fc" id="L110">		String riskLevel = identifyRiskLevel(agePatient, triggersNumber, genderPatient);</span>
+<span class="fc" id="L111">		logger.info(&quot;Assessment completed for patient &quot; + patient.getId() + &quot; diabetes risk level: &quot; + riskLevel);</span>
+<span class="fc" id="L112">		return &quot;Patient: &quot; + patient.getGiven() + &quot; &quot; + patient.getFamily() + &quot; (age &quot; + agePatient</span>
+				+ &quot;) diabetes assessment is: &quot; + riskLevel;
+	}
+
+	/**
+	 * Calculates the age of a patient based on their date of birth.
+	 *
+	 * @param dob The date of birth of the patient.
+	 * @return The age of the patient in years.
+	 */
+	private int calculateAge(LocalDate dob) {
+<span class="fc" id="L123">		LocalDate todayDate = LocalDate.now();</span>
+<span class="fc" id="L124">		Period difference = Period.between(dob, todayDate);</span>
+<span class="fc" id="L125">		return difference.getYears();</span>
+	}
+
+	/**
+	 * Searches for triggers related to diabetes risk in the patient's notes.
+	 *
+	 * @param notesList The list of NotesPatientBean objects representing the
+	 *                  patient's notes.
+	 * @return The number of unique triggers found in the notes.
+	 */
+	private int searchTriggersInNotes(List&lt;NotesPatientBean&gt; notesList) {
+<span class="fc" id="L136">		List&lt;String&gt; triggersPresent = new ArrayList&lt;String&gt;();</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">		for (NotesPatientBean notes : notesList) {</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">			for (String trigger : TRIGGERS) {</span>
+<span class="pc bpc" id="L139" title="1 of 4 branches missed.">				if (notes.getE().contains(trigger) &amp;&amp; !triggersPresent.contains(trigger)) {</span>
+<span class="fc" id="L140">					triggersPresent.add(trigger);</span>
+				}
+<span class="fc" id="L142">			}</span>
+<span class="fc" id="L143">		}</span>
+<span class="fc" id="L144">		return triggersPresent.size();</span>
+	}
+
+	/**
+	 * Identifies the risk level of a patient based on age, trigger count, and
+	 * gender.
+	 *
+	 * @param age           The age of the patient.
+	 * @param triggerNumber The number of unique triggers found in the patient's
+	 *                      notes.
+	 * @param gender        The gender of the patient (&quot;M&quot; for male, &quot;F&quot; for
+	 *                      female).
+	 * @return The risk level as a String (&quot;None&quot;, &quot;Borderline&quot;, &quot;In Danger&quot;, &quot;Early
+	 *         Onset&quot;, or &quot;Indeterminate&quot;).FF
+	 */
+	private String identifyRiskLevel(int age, int triggerNumber, String gender) {
+<span class="pc bpc" id="L160" title="1 of 2 branches missed.">		if (triggerNumber &lt; 2) {</span>
+<span class="nc" id="L161">			return &quot;None&quot;;</span>
+<span class="pc bpc" id="L162" title="2 of 4 branches missed.">		} else if (triggerNumber == 2 &amp;&amp; age &gt; 30) {</span>
+<span class="fc" id="L163">			return &quot;Borderline&quot;;</span>
+<span class="nc bnc" id="L164" title="All 6 branches missed.">		} else if ((gender.equals(&quot;M&quot;) &amp;&amp; age &lt; 30 &amp;&amp; triggerNumber &lt; 5)</span>
+<span class="nc bnc" id="L165" title="All 10 branches missed.">				|| (gender.equals(&quot;F&quot;) &amp;&amp; age &lt; 30 &amp;&amp; triggerNumber &lt; 7) || (age &gt; 30 &amp;&amp; triggerNumber &lt; 8)) {</span>
+<span class="nc" id="L166">			return &quot;In Danger&quot;;</span>
+<span class="nc bnc" id="L167" title="All 6 branches missed.">		} else if ((gender.equals(&quot;M&quot;) &amp;&amp; age &lt; 30 &amp;&amp; triggerNumber &gt;= 5)</span>
+<span class="nc bnc" id="L168" title="All 10 branches missed.">				|| (gender.equals(&quot;F&quot;) &amp;&amp; age &lt; 30 &amp;&amp; triggerNumber &gt;= 7) || (age &gt; 30 &amp;&amp; triggerNumber &gt;= 8)) {</span>
+<span class="nc" id="L169">			return &quot;Early Onset&quot;;</span>
+		}
+<span class="nc" id="L171">		return &quot;Indeterminate&quot;;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

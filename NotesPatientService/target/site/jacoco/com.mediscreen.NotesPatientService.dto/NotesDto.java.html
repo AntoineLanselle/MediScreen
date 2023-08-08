@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NotesDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">NotesPatientService</a> &gt; <a href="index.source.html" class="el_package">com.mediscreen.NotesPatientService.dto</a> &gt; <span class="el_source">NotesDto.java</span></div><h1>NotesDto.java</h1><pre class="source lang-java linenums">package com.mediscreen.NotesPatientService.dto;
+
+import java.time.LocalDateTime;
+
+import com.mediscreen.NotesPatientService.domain.Notes;
+
+/**
+ * Data Transfer Object (DTO) for representing a Notes. Contains notes
+ * information used for communication between different layers of the
+ * application.
+ * 
+ * @author Antoine Lanselle
+ */
+public class NotesDto {
+
+	private int notesId;
+	private int patId;
+	private LocalDateTime dateTimeNote;
+	private String e;
+
+<span class="fc" id="L21">	public NotesDto() {</span>
+<span class="fc" id="L22">	}</span>
+
+<span class="fc" id="L24">	public NotesDto(int patId, String e) {</span>
+<span class="fc" id="L25">		this.patId = patId;</span>
+<span class="fc" id="L26">		this.e = e;</span>
+<span class="fc" id="L27">	}</span>
+	
+<span class="fc" id="L29">	public NotesDto(Notes notes) {</span>
+<span class="fc" id="L30">		this.notesId = notes.getNotesId();</span>
+<span class="fc" id="L31">		this.patId = notes.getPatientId();</span>
+<span class="fc" id="L32">		this.dateTimeNote = notes.getDateTimeNote();</span>
+<span class="fc" id="L33">		this.e = notes.getNotes();</span>
+<span class="fc" id="L34">	}</span>
+
+	public int getNotesId() {
+<span class="fc" id="L37">		return notesId;</span>
+	}
+
+	public void setNotesId(int id) {
+<span class="fc" id="L41">		this.notesId = id;</span>
+<span class="fc" id="L42">	}</span>
+
+	public int getPatId() {
+<span class="fc" id="L45">		return patId;</span>
+	}
+
+	public void setPatId(int patId) {
+<span class="nc" id="L49">		this.patId = patId;</span>
+<span class="nc" id="L50">	}</span>
+
+	public LocalDateTime getDateTimeNote() {
+<span class="fc" id="L53">		return dateTimeNote;</span>
+	}
+
+	public void setDateTimeNote(LocalDateTime dateTimeNote) {
+<span class="fc" id="L57">		this.dateTimeNote = dateTimeNote;</span>
+<span class="fc" id="L58">	}</span>
+
+	public String getE() {
+<span class="fc" id="L61">		return e;</span>
+	}
+
+	public void setE(String e) {
+<span class="fc" id="L65">		this.e = e;</span>
+<span class="fc" id="L66">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

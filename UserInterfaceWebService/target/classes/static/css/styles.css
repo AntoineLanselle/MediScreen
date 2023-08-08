@@ -1,0 +1,236 @@
+/* styles.css */
+
+body {
+	font-family: Arial, sans-serif;
+  	background-color: #f0f7f9;
+  	margin: 0;
+  	padding: 0;
+}
+
+.container {
+	box-shadow: 0px 0px 50px 10px rgba(0,0,0,0.40);
+	max-width: 1000px;
+	margin: 0 auto;
+	padding: 20px;
+	background-color: #fff;
+}
+
+.logo {
+	margin: 30px;
+	display: flex;
+	justify-content: left;
+	align-items: center;
+}
+
+.logo img {
+	width: 100px;
+	margin: 30px;
+}
+
+h1 {
+	font-size: 50px;
+	color: #337ab7;
+}
+
+.patientTableActions {
+	margin-bottom: 30px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+
+.rightButtons {
+    display: flex;
+    align-items: center;
+}
+
+.rightButtons form {
+    margin-right: 10px;
+}
+
+.addPatient {
+    margin-right: auto;
+    display: flex;
+    align-items: center; 
+}
+
+.form-group {
+    display: flex;
+    align-items: center; 
+}
+
+.patient-form {
+	margin-bottom: 30px;
+	display: flex;
+	flex-direction: column;
+}
+
+.form-content {
+	padding-left: 30px;
+	padding-right: 30px;
+	display: flex;
+	justify-content: space-between;
+}
+
+.form-right {
+	align-items: center; 
+}
+
+.form-right fieldset {
+	margin-bottom: 17px;
+}
+
+fieldset {
+	width: 90%;
+	padding: 15px;
+}
+
+.error {
+	margin-left: 20px;
+	color: red;
+  	flex-grow: 1;
+}
+
+p.error {
+	height: 15px;
+	margin: 0px;
+	margin-bottom: 10px;
+	width: 100%;
+}
+
+.patient-form {
+    align-items: center; 
+}
+
+.input-group {
+	margin: 10px;
+	display: flex;
+    flex-direction: column;
+}
+
+input {
+ 	padding: 10px;
+ 	border-radius: 4px;
+ 	border: 1px solid #ccc;
+}
+
+input:focus {
+	outline-color: #5cb85c;
+}
+
+button {
+ 	 padding: 8px 15px;
+ 	 border-radius: 4px;
+ 	 border: none;
+ 	 color: #fff;
+ 	 background-color: #337ab7;
+ 	 cursor: pointer;
+}
+
+button:hover {
+  	background-color: #5cb85c;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table th,
+table td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tbody tr:hover {
+	cursor: pointer;
+	background-color: #5cb85c;
+	color: #fff;
+}
+
+details {
+	&[open] {
+		box-shadow: -3px 0 0 #5cb85c;
+		
+		&:first-of-type {
+			border-top: 3px solid #5cb85c;
+		}
+	}
+	&:first-of-type {
+		border-top: 1px solid black;
+	}
+	& > div {
+		padding: 2em 2em 0;
+		font-size: .875em;
+	}
+}
+
+details div.note-button {
+	display: flex; 
+	justify-content: flex-end;
+}
+
+div.note-button form {
+	margin: 0px 10px 10px 0px;
+}
+
+details summary  {
+  	list-style: none;
+	padding: 1em .5em;
+ 	color: black;
+ 	position: relative;
+  	background-color: #fff;
+ 	font-size: 20px;
+ 	cursor: pointer;
+ 	&::-webkit-details-marker {
+		display: none;
+	}
+	
+	&:hover {
+		background-color: #5cb85c;
+		color: white;
+	}
+}
+
+details pre {
+  margin: 40px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  white-space: pre-wrap;
+}
+
+textarea {
+	padding: 20px;
+	height: 200px;
+	width: 87%;
+	font-family: Arial, sans-serif;
+	font-size: 16px;
+	resize: none;
+	margin: 0 auto 20px auto; 
+  	display: block;
+}
+
+.notification {
+    position : fixed;
+    bottom: 4px;
+    right: 4px;
+    width: max-content;
+    z-index: 9999;
+    border-radius: 6px;
+    background-color: #5cb85c;
+    color: #fff;
+    opacity: 0;
+    visibility: hidden;
+}
+
+
+.notification_body {
+	padding: 8px;
+}

@@ -1,4 +1,12 @@
 -------------------------------------------------------------------------------
 Test set: com.mediscreen.patientApi.controller.PatientApiControllerTest
 -------------------------------------------------------------------------------
-Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.032 s - in com.mediscreen.patientApi.controller.PatientApiControllerTest
+<<<<<<< HEAD
+<<<<<<< HEAD
+Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.241 s - in com.mediscreen.patientApi.controller.PatientApiControllerTest
+=======
+Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.308 s - in com.mediscreen.patientApi.controller.PatientApiControllerTest
+>>>>>>> 7b85438 (Clean package of all services)
+=======
+Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.241 s - in com.mediscreen.patientApi.controller.PatientApiControllerTest
+>>>>>>> be49c38 (small fixes)

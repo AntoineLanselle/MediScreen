@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NotesPatientBean.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PatientAssessmentService</a> &gt; <a href="index.source.html" class="el_package">com.mediscreen.PatientAssesmentService.beans</a> &gt; <span class="el_source">NotesPatientBean.java</span></div><h1>NotesPatientBean.java</h1><pre class="source lang-java linenums">package com.mediscreen.PatientAssesmentService.beans;
+
+import java.time.LocalDateTime;
+
+/**
+ * NotesPatientBean represents a patient's notes data used in patient assessment
+ * service.
+ * 
+ * @author Antoine Lanselle
+ */
+public class NotesPatientBean {
+
+	private int notesId;
+	private int patId;
+	private LocalDateTime dateTimeNote;
+	private String e;
+
+<span class="fc" id="L18">	public NotesPatientBean() {</span>
+<span class="fc" id="L19">	}</span>
+
+	public int getNotesId() {
+<span class="nc" id="L22">		return notesId;</span>
+	}
+
+	public void setNotesId(int notesId) {
+<span class="nc" id="L26">		this.notesId = notesId;</span>
+<span class="nc" id="L27">	}</span>
+
+	public int getPatId() {
+<span class="nc" id="L30">		return patId;</span>
+	}
+
+	public void setPatId(int patId) {
+<span class="nc" id="L34">		this.patId = patId;</span>
+<span class="nc" id="L35">	}</span>
+
+	public LocalDateTime getDateTimeNote() {
+<span class="nc" id="L38">		return dateTimeNote;</span>
+	}
+
+	public void setDateTimeNote(LocalDateTime dateTimeNote) {
+<span class="nc" id="L42">		this.dateTimeNote = dateTimeNote;</span>
+<span class="nc" id="L43">	}</span>
+
+	public String getE() {
+<span class="fc" id="L46">		return e;</span>
+	}
+
+	public void setE(String e) {
+<span class="fc" id="L50">		this.e = e;</span>
+<span class="fc" id="L51">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
