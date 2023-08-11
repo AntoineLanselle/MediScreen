@@ -10,7 +10,7 @@ To run the MediScreen application, follow these steps:
 
 2. In the root folder run the command :
 ```
-	docker-compose up
+docker-compose up
 ```
 3. The application will start.
 	- patient-api running on http://localhost:8081.
