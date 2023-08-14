@@ -17,4 +17,4 @@ docker-compose up
 	- user-interface running on http://localhost:8080.
 
 4. You can add test patients by running the scripts in this directory :
-[PatientDatabase/scripts](PatientDatabase/scripts)
+[PatientDatabase/scripts](util/scripts)
