@@ -1,0 +1,8 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+NotesPatientService,com.mediscreen.NotesPatientService.domain,Notes,20,38,0,0,9,15,3,8,3,8
+NotesPatientService,com.mediscreen.NotesPatientService.domain,SequenceCounter,3,14,0,0,1,6,1,4,1,4
+NotesPatientService,com.mediscreen.NotesPatientService.exception,NotesNotFoundException,0,4,0,0,0,2,0,1,0,1
+NotesPatientService,com.mediscreen.NotesPatientService.controller,NotesController,0,109,0,0,0,28,0,8,0,8
+NotesPatientService,com.mediscreen.NotesPatientService.service,NotesServiceImpl,0,188,0,6,0,44,0,10,0,7
+NotesPatientService,com.mediscreen.NotesPatientService.dto,NotesDto,4,55,0,0,2,22,1,10,1,10
+NotesPatientService,com.mediscreen.NotesPatientService,NotesPatientServiceApplication,8,0,0,0,3,0,2,0,2,0

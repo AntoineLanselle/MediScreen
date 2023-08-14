@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NotesController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">NotesPatientService</a> &gt; <a href="index.source.html" class="el_package">com.mediscreen.NotesPatientService.controller</a> &gt; <span class="el_source">NotesController.java</span></div><h1>NotesController.java</h1><pre class="source lang-java linenums">package com.mediscreen.NotesPatientService.controller;
+
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.mediscreen.NotesPatientService.service.NotesService;
+import com.mediscreen.NotesPatientService.dto.NotesDto;
+import com.mediscreen.NotesPatientService.exception.NotesNotFoundException;
+
+/**
+ * Controller class for managing notes-related API endpoints. Handles requests
+ * for retrieving, adding, updating, and deleting notes. Uses the NotesService
+ * for handling the business logic. Maps incoming requests to the appropriate
+ * methods and returns the corresponding responses.
+ * 
+ * @author Antoine Lanselle
+ */
+@RestController
+<span class="fc" id="L34">public class NotesController {</span>
+
+<span class="fc" id="L36">	private Logger logger = LoggerFactory.getLogger(NotesController.class);</span>
+
+	@Autowired
+	private NotesService notesService;
+
+	/**
+	 * Retrieves a notes by their ID.
+	 *
+	 * @param notesId the ID of the notes to retrieve.
+	 * 
+	 * @return a ResponseEntity with HTTP OK status and the retrieved notes as the
+	 *         response body. If the notes is not found, returns HTTP NOT_FOUND
+	 *         status.
+	 */
+	@GetMapping(&quot;/patHistory/{notesId}&quot;)
+	public ResponseEntity&lt;NotesDto&gt; getNotesById(@PathVariable(&quot;notesId&quot;) int notesId) {
+<span class="fc" id="L52">		logger.info(&quot;GET request - getNotesById &quot; + notesId);</span>
+		try {
+<span class="fc" id="L54">			return ResponseEntity.status(HttpStatus.OK).body(notesService.getNotesById(notesId));</span>
+<span class="fc" id="L55">		} catch (NotesNotFoundException ex) {</span>
+<span class="fc" id="L56">			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();</span>
+		}
+	}
+
+	/**
+	 * Retrieves a list of notes based on the specified patient id.
+	 *
+	 * @param patId the patient id for filtering notes by patient id.
+	 * 
+	 * @return a ResponseEntity with HTTP OK status containing a list of NotesDto
+	 *         objects matching the patient id.
+	 */
+	@GetMapping(&quot;/patHistory&quot;)
+	public ResponseEntity&lt;List&lt;NotesDto&gt;&gt; getAllPatientNotes(@RequestParam int patId) {
+<span class="fc" id="L70">		logger.info(&quot;GET request - getAllPatientNotes &quot; + patId);</span>
+
+<span class="fc" id="L72">		return ResponseEntity.status(HttpStatus.OK).body(notesService.findByPatientId(patId));</span>
+	}
+
+	/**
+	 * Add a new notes using JSON data format.
+	 *
+	 * @param NotesDto a NotesDto object containing the notes's informations.
+	 *
+	 * @return a ResponseEntity with HTTP status and a message indicating the result
+	 *         of the operation. If the patient is added successfully, returns HTTP
+	 *         CREATED status.
+	 */
+	@PostMapping(path = &quot;/patHistory/add&quot;, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity&lt;String&gt; addNotesJson(@RequestBody NotesDto notesDto) {
+<span class="fc" id="L86">		logger.info(&quot;POST request - addNotes using Json&quot;);</span>
+
+<span class="fc" id="L88">		return addNotesInternal(notesDto);</span>
+	}
+
+	/**
+	 * Add a new notes using URL-encoded form data format.
+	 *
+	 * @param NotesDto a NotesDto object containing the notes's informations.
+	 *
+	 * @return a ResponseEntity with HTTP status and a message indicating the result
+	 *         of the operation. If the patient is added successfully, returns HTTP
+	 *         CREATED status.
+	 */
+	@PostMapping(path = &quot;/patHistory/add&quot;, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public ResponseEntity&lt;String&gt; addNotesUrl(@ModelAttribute NotesDto notesDto) {
+<span class="fc" id="L102">		logger.info(&quot;POST request - addNotes using URL encoded&quot;);</span>
+
+<span class="fc" id="L104">		return addNotesInternal(notesDto);</span>
+	}
+
+	/**
+	 * Internal method to add a new notes to the system.
+	 *
+	 * @param notesDto a NotesDto object containing the notes's informations.
+	 *
+	 * @return a ResponseEntity with HTTP status and a message indicating the result
+	 *         of the operation. If the patient is added successfully, returns HTTP
+	 *         CREATED status.
+	 */
+	private ResponseEntity&lt;String&gt; addNotesInternal(NotesDto notesDto) {
+<span class="fc" id="L117">		notesService.createNotes(notesDto);</span>
+<span class="fc" id="L118">		return ResponseEntity.status(HttpStatus.CREATED).body(&quot;Notes has been added in the data base.&quot;);</span>
+	}
+
+	/**
+	 * Updates an existing notes in the database.
+	 *
+	 * @param notesId  the ID of the notes to update.
+	 * @param notesDto a NotesDto object containing the updated notes's information.
+	 * 
+	 * @return a ResponseEntity with HTTP status and a message indicating the result
+	 *         of the operation. If the notes is updated successfully, returns HTTP
+	 *         OK status. If the notes is not found, returns HTTP NOT_FOUND status.
+	 */
+	@PutMapping(&quot;/patHistory/update&quot;)
+	public ResponseEntity&lt;String&gt; updateNotes(@RequestBody NotesDto notesDto) {
+<span class="fc" id="L133">		logger.info(&quot;PUT request - updateNotes &quot; + notesDto.getNotesId());</span>
+
+		try {
+<span class="fc" id="L136">			notesService.updateNotes(notesDto);</span>
+<span class="fc" id="L137">		} catch (NotesNotFoundException ex) {</span>
+<span class="fc" id="L138">			return ResponseEntity.status(HttpStatus.NOT_FOUND)</span>
+<span class="fc" id="L139">					.body(&quot;Notes with id: &quot; + notesDto.getNotesId() + &quot;, not found in data base !&quot;);</span>
+<span class="fc" id="L140">		}</span>
+<span class="fc" id="L141">		return ResponseEntity.status(HttpStatus.OK).body(&quot;Notes has been updated in data base.&quot;);</span>
+	}
+
+	/**
+	 * Deletes a notes from the database.
+	 *
+	 * @param notesId the ID of the notes to delete.
+	 * 
+	 * @return a ResponseEntity with HTTP status and a message indicating the result
+	 *         of the operation. If the notes is deleted successfully, returns HTTP
+	 *         OK status. If the notes is not found, returns HTTP NOT_FOUND status.
+	 */
+	@DeleteMapping(&quot;/patHistory/delete/{notesId}&quot;)
+	public ResponseEntity&lt;String&gt; deleteNotes(@PathVariable(&quot;notesId&quot;) int notesId) {
+<span class="fc" id="L155">		logger.info(&quot;DELETE request - deleteNotes &quot; + notesId);</span>
+
+		try {
+<span class="fc" id="L158">			notesService.deleteNotes(notesId);</span>
+<span class="fc" id="L159">		} catch (NotesNotFoundException ex) {</span>
+<span class="fc" id="L160">			return ResponseEntity.status(HttpStatus.NOT_FOUND)</span>
+<span class="fc" id="L161">					.body(&quot;Notes with id: &quot; + notesId + &quot;, not found in data base !&quot;);</span>
+<span class="fc" id="L162">		}</span>
+<span class="fc" id="L163">		return ResponseEntity.status(HttpStatus.OK).body(&quot;Notes has been deleted from data base.&quot;);</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
